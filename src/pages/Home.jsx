@@ -1,11 +1,18 @@
 import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, Truck, ShieldCheck, Heart, ShoppingBag, Eye, Leaf, Infinity, Award } from 'lucide-react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { mockProducts } from '../data';
 
 export default function Home() {
     const navigate = useNavigate();
     const [toastMessage, setToastMessage] = useState('');
+    const { scrollY } = useScroll();
+
+    // Parallax effect for hero section
+    const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
+    const y2 = useTransform(scrollY, [0, 1000], [0, -100]);
+    const opacityHero = useTransform(scrollY, [0, 500], [1, 0]);
 
     const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 4);
 
@@ -21,255 +28,327 @@ export default function Home() {
         setTimeout(() => setToastMessage(''), 3000);
     };
 
+    // Reusable animation variants
+    const fadeUpVariant = {
+        hidden: { opacity: 0, y: 40 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] } }
+    };
+
+    const staggerContainer = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: { staggerChildren: 0.2 }
+        }
+    };
+
     return (
         <div className="page home-page" style={{ paddingBottom: '0' }}>
 
             {/* Toast Notification */}
-            {toastMessage && (
-                <div style={{
+            <motion.div
+                initial={{ y: 100, opacity: 0 }}
+                animate={{ y: toastMessage ? 0 : 100, opacity: toastMessage ? 1 : 0 }}
+                style={{
                     position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 9999,
-                    background: 'var(--color-secondary)', color: 'white', padding: '1rem 2rem',
-                    borderRadius: 'var(--radius-full)', display: 'flex', alignItems: 'center', gap: '0.5rem',
-                    boxShadow: 'var(--shadow-lg)', animation: 'slideUp 0.3s ease-out'
+                    background: 'var(--color-primary)', color: 'white', padding: '1rem 2rem',
+                    borderRadius: 'var(--radius-full)', display: 'flex', alignItems: 'center', gap: '0.75rem',
+                    boxShadow: 'var(--shadow-lg)'
                 }}>
-                    <ShoppingBag size={20} /> <span style={{ fontWeight: 500 }}>{toastMessage}</span>
-                </div>
-            )}
+                <ShoppingBag size={20} /> <span style={{ fontWeight: 500 }}>{toastMessage}</span>
+            </motion.div>
 
             {/* Hero Section */}
             <section className="hero" style={{
                 position: 'relative',
-                minHeight: '85vh',
+                minHeight: '90vh',
                 display: 'flex',
                 alignItems: 'center',
                 background: 'var(--color-bg-main)',
                 overflow: 'hidden',
-                padding: '2rem'
+                padding: '4rem 0'
             }}>
-                {/* Abstract shapes for premium feel */}
-                <div style={{ position: 'absolute', top: '-10%', right: '-5%', width: '500px', height: '500px', background: 'radial-gradient(circle, rgba(233,196,106,0.3) 0%, rgba(250,249,246,0) 70%)', borderRadius: '50%', zIndex: 0 }}></div>
-                <div style={{ position: 'absolute', bottom: '-20%', left: '-10%', width: '600px', height: '600px', background: 'radial-gradient(circle, rgba(139,90,43,0.15) 0%, rgba(250,249,246,0) 70%)', borderRadius: '50%', zIndex: 0 }}></div>
+                {/* Premium Abstract Background Elements */}
+                <motion.div style={{ y: y1, position: 'absolute', top: '-10%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(155,112,78,0.06) 0%, rgba(250,250,248,0) 70%)', borderRadius: '50%', zIndex: 0, filter: 'blur(40px)' }} />
+                <motion.div style={{ y: y2, position: 'absolute', bottom: '-20%', left: '-5%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(26,26,26,0.04) 0%, rgba(250,250,248,0) 70%)', borderRadius: '50%', zIndex: 0, filter: 'blur(40px)' }} />
 
-                <div className="container" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'minmax(400px, 1.2fr) 1fr', gap: '4rem', alignItems: 'center', width: '100%' }}>
+                <div className="container" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'minmax(450px, 1.1fr) 1fr', gap: '5rem', alignItems: 'center', width: '100%' }}>
 
                     {/* Text Content */}
-                    <div style={{ animation: 'slideUp 0.8s ease-out' }}>
-                        <span style={{
-                            display: 'inline-block', padding: '0.5rem 1rem', background: 'rgba(139, 90, 43, 0.1)',
-                            color: 'var(--color-primary)', borderRadius: 'var(--radius-full)', fontWeight: 600,
-                            fontSize: '0.875rem', letterSpacing: '1px', textTransform: 'uppercase', marginBottom: '1.5rem'
-                        }}>
-                            Authentic & Sustainable Platform
-                        </span>
-                        <h1 style={{ fontSize: '4.5rem', fontWeight: '800', lineHeight: '1.1', marginBottom: '1.5rem', color: 'var(--color-secondary)' }}>
-                            Woven with <span className="gradient-text">Tradition</span>, <br />Tailored for the World.
-                        </h1>
-                        <p style={{ fontSize: '1.25rem', marginBottom: '2.5rem', color: 'var(--color-text-muted)', maxWidth: '600px', lineHeight: 1.8 }}>
-                            Discover authentic, ethically sourced handloom fashion and decor. Buying directly from master artisans ensures fair trade and preserves irreplaceable ancient crafts.
-                        </p>
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
+                    <motion.div
+                        variants={staggerContainer}
+                        initial="hidden"
+                        animate="visible"
+                        style={{ opacity: opacityHero }}
+                    >
+                        <motion.div variants={fadeUpVariant}>
+                            <span style={{
+                                display: 'inline-block', padding: '0.4rem 1.2rem', background: 'rgba(155, 112, 78, 0.1)',
+                                color: 'var(--color-secondary-dark)', borderRadius: 'var(--radius-full)', fontWeight: 600,
+                                fontSize: '0.8rem', letterSpacing: '0.05em', textTransform: 'uppercase', marginBottom: '2rem',
+                                border: '1px solid rgba(155, 112, 78, 0.2)'
+                            }}>
+                                Authentic & Sustainable Platform
+                            </span>
+                        </motion.div>
+
+                        <motion.h1 variants={fadeUpVariant} style={{ fontSize: '5rem', fontWeight: '400', lineHeight: '1.05', marginBottom: '1.5rem', color: 'var(--color-primary)', letterSpacing: '-0.02em' }}>
+                            Woven with <span style={{ fontStyle: 'italic', color: 'var(--color-secondary)' }}>Tradition</span>,<br />
+                            <span style={{ fontWeight: 600 }}>Tailored for the World.</span>
+                        </motion.h1>
+
+                        <motion.p variants={fadeUpVariant} style={{ fontSize: '1.15rem', marginBottom: '3rem', color: 'var(--color-text-muted)', maxWidth: '550px', lineHeight: 1.8, fontWeight: 300 }}>
+                            Discover authentic, ethically sourced handloom fashion. Buying directly from master artisans ensures fair trade and preserves irreplaceable ancient crafts.
+                        </motion.p>
+
+                        <motion.div variants={fadeUpVariant} style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
                             <button onClick={() => {
                                 document.getElementById('trending').scrollIntoView({ behavior: 'smooth' });
-                            }} className="btn btn-primary" style={{ padding: '1.25rem 2.5rem', fontSize: '1.1rem' }}>
-                                Shop Collection <ArrowRight size={20} />
+                            }} className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem' }}>
+                                Shop Collection <ArrowRight size={18} />
                             </button>
-                            <Link to="/login" className="btn btn-secondary" style={{ padding: '1.25rem 2.5rem', fontSize: '1.1rem', background: 'transparent' }}>
+                            <Link to="/login" className="btn btn-secondary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem', border: '1px solid transparent', borderBottom: '1px solid var(--color-border)', borderRadius: 0 }}>
                                 Artisan Portal
                             </Link>
-                        </div>
+                        </motion.div>
 
                         {/* Stats */}
-                        <div style={{ display: 'flex', gap: '3rem', marginTop: '4rem', borderTop: '1px solid var(--color-border)', paddingTop: '2rem' }}>
+                        <motion.div variants={fadeUpVariant} style={{ display: 'flex', gap: '3.5rem', marginTop: '4.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '2.5rem' }}>
                             <div>
-                                <h4 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-primary)' }}>500+</h4>
-                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>Master Artisans</p>
+                                <h4 style={{ fontSize: '2.2rem', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-main)', letterSpacing: '-0.03em' }}>500+</h4>
+                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Master Artisans</p>
                             </div>
                             <div>
-                                <h4 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-primary)' }}>12k+</h4>
-                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>Authentic Products</p>
+                                <h4 style={{ fontSize: '2.2rem', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-main)', letterSpacing: '-0.03em' }}>12k+</h4>
+                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Authentic Pieces</p>
                             </div>
-                            <div>
-                                <h4 style={{ fontSize: '2rem', fontWeight: 800, color: 'var(--color-primary)' }}>50+</h4>
-                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', fontWeight: 500 }}>Countries Shipped</p>
-                            </div>
-                        </div>
-                    </div>
+                        </motion.div>
+                    </motion.div>
 
                     {/* Hero Image Collage */}
-                    <div style={{ position: 'relative', height: '600px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <img
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
+                        style={{ position: 'relative', height: '650px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+                    >
+                        <motion.img
                             src="https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?auto=format&fit=crop&q=80&w=800"
                             alt="Jamdani Saree"
+                            animate={{ y: [0, -15, 0] }}
+                            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
                             style={{
-                                width: '65%', height: '80%', objectFit: 'cover', borderRadius: 'var(--radius-lg)',
+                                width: '70%', height: '85%', objectFit: 'cover', borderRadius: '4px',
                                 boxShadow: 'var(--shadow-xl)', position: 'absolute', right: '0', zIndex: 1,
-                                animation: 'float 6s ease-in-out infinite'
                             }}
                         />
-                        <img
+                        <motion.img
                             src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=600"
                             alt="Khadi Shirt"
+                            animate={{ y: [0, 15, 0] }}
+                            transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                             style={{
-                                width: '50%', height: '60%', objectFit: 'cover', borderRadius: 'var(--radius-lg)',
-                                boxShadow: 'var(--shadow-lg)', position: 'absolute', left: '0', bottom: '5%', zIndex: 2,
-                                border: '8px solid white', animation: 'float 7s ease-in-out infinite reverse'
+                                width: '55%', height: '65%', objectFit: 'cover', borderRadius: '4px',
+                                boxShadow: 'var(--shadow-lg)', position: 'absolute', left: '-5%', bottom: '5%', zIndex: 2,
+                                border: '12px solid var(--color-bg-main)'
                             }}
                         />
                         {/* Glass badge */}
-                        <div className="glass-panel" style={{
-                            position: 'absolute', top: '15%', left: '-5%', display: 'flex', alignItems: 'center', gap: '1rem',
-                            padding: '1rem 1.5rem', zIndex: 3
-                        }}>
-                            <div style={{ background: '#e2f5e9', color: '#065f46', padding: '0.5rem', borderRadius: '50%' }}>
-                                <Leaf size={24} />
+                        <motion.div
+                            initial={{ opacity: 0, x: -20 }}
+                            animate={{ opacity: 1, x: 0 }}
+                            transition={{ delay: 1.5, duration: 0.8 }}
+                            className="glass-panel" style={{
+                                position: 'absolute', top: '15%', left: '-10%', display: 'flex', alignItems: 'center', gap: '1rem',
+                                padding: '1rem 1.5rem', zIndex: 3
+                            }}>
+                            <div style={{ background: 'rgba(255,255,255,0.9)', color: 'var(--color-primary)', padding: '0.6rem', borderRadius: '50%', boxShadow: 'var(--shadow-sm)' }}>
+                                <Leaf size={20} />
                             </div>
                             <div>
-                                <p style={{ fontWeight: 700, margin: 0, color: 'var(--color-text-main)' }}>100% Organic</p>
-                                <p style={{ fontSize: '0.8rem', color: 'white', margin: 0, textShadow: '0 1px 2px rgba(0,0,0,0.5)' }}>Natural Fibers</p>
+                                <p style={{ fontWeight: 600, margin: 0, color: 'var(--color-primary)', fontSize: '0.9rem' }}>100% Organic</p>
+                                <p style={{ fontSize: '0.75rem', color: 'var(--color-text-muted)', margin: 0 }}>Natural Fibers</p>
                             </div>
-                        </div>
-                    </div>
+                        </motion.div>
+                    </motion.div>
 
                 </div>
             </section>
 
             {/* Why Choose Us */}
-            <section style={{ padding: '6rem 0', background: 'white' }}>
+            <section style={{ padding: '8rem 0', background: 'white' }}>
                 <div className="container">
-                    <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                        <h2 style={{ fontSize: '2.5rem', color: 'var(--color-secondary)' }}>The Handloom Promise</h2>
-                        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', maxWidth: '600px', margin: '0 auto' }}>
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+                        variants={fadeUpVariant}
+                        style={{ textAlign: 'center', marginBottom: '5rem' }}
+                    >
+                        <h2 style={{ fontSize: '3rem', color: 'var(--color-primary)', fontWeight: 400 }}>The Handloom Promise</h2>
+                        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', maxWidth: '600px', margin: '1rem auto 0', fontWeight: 300, lineHeight: 1.8 }}>
                             We're changing how the world buys ethnic fashion. Transparent, ethical, and incredibly high quality.
                         </p>
-                    </div>
+                    </motion.div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '3rem' }}>
                         {[
                             { icon: Infinity, title: 'Sustainable', desc: 'Slow fashion made with pure natural fibers and eco-friendly dyes reducing carbon footprint.' },
                             { icon: ShieldCheck, title: 'Authentic & Verified', desc: 'Every product is hand-checked for authenticity, ensuring no power-loom fakes.' },
                             { icon: Heart, title: 'Fair Trade', desc: 'Direct market access empowers artisans to earn exactly what they deserve.' },
                             { icon: Award, title: 'Heirloom Quality', desc: 'Craftsmanship passed down through generations, built to last a lifetime.' }
                         ].map((feature, i) => (
-                            <div key={i} className="card" style={{ textAlign: 'center', padding: '3rem 2rem', background: 'var(--color-bg-main)', border: 'none' }}>
+                            <motion.div
+                                key={i}
+                                initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-50px" }}
+                                variants={{
+                                    hidden: { opacity: 0, y: 30 },
+                                    visible: { opacity: 1, y: 0, transition: { duration: 0.6, delay: i * 0.1, ease: "easeOut" } }
+                                }}
+                                style={{ textAlign: 'center', padding: '2rem 1rem' }}
+                            >
                                 <div style={{
-                                    background: 'var(--color-primary)', color: 'white', width: '60px', height: '60px',
+                                    color: 'var(--color-secondary)', width: '64px', height: '64px',
                                     borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    margin: '0 auto 1.5rem', boxShadow: '0 4px 15px rgba(139, 90, 43, 0.4)'
+                                    margin: '0 auto 1.5rem', background: 'var(--color-bg-main)', border: '1px solid var(--color-border)'
                                 }}>
-                                    <feature.icon size={28} />
+                                    <feature.icon size={28} strokeWidth={1.5} />
                                 </div>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--color-secondary)' }}>{feature.title}</h3>
-                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: 1.6 }}>{feature.desc}</p>
-                            </div>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--color-primary)', fontWeight: 600 }}>{feature.title}</h3>
+                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 300 }}>{feature.desc}</p>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* Interactive Payable Catalog - Trending Now */}
-            <section id="trending" style={{ padding: '6rem 0', background: 'var(--color-bg-main)' }}>
+            <section id="trending" style={{ padding: '8rem 0', background: 'var(--color-bg-main)' }}>
                 <div className="container">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '3rem' }}>
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+                        variants={fadeUpVariant}
+                        style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '4rem', flexWrap: 'wrap', gap: '2rem' }}
+                    >
                         <div>
-                            <span style={{ color: 'var(--color-primary)', fontWeight: 600, letterSpacing: '1px', textTransform: 'uppercase' }}>Curated Collection</span>
-                            <h2 style={{ fontSize: '2.5rem', color: 'var(--color-secondary)', marginTop: '0.5rem' }}>Trending Handlooms</h2>
+                            <span style={{ color: 'var(--color-secondary)', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.8rem' }}>Curated Collection</span>
+                            <h2 style={{ fontSize: '3rem', color: 'var(--color-primary)', marginTop: '0.5rem', fontWeight: 400 }}>Trending Pieces</h2>
                         </div>
-                        <Link to="/buyer" className="btn btn-secondary">View All Catalog</Link>
-                    </div>
+                        <Link to="/buyer" className="btn btn-secondary" style={{ padding: '0.8rem 2rem' }}>View Full Catalog</Link>
+                    </motion.div>
 
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2.5rem' }}>
-                        {featuredProducts.map(product => (
-                            <div key={product.id} className="card product-card" style={{ padding: 0, overflow: 'hidden', display: 'flex', flexDirection: 'column', position: 'relative' }}>
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(320px, 1fr))', gap: '3rem' }}>
+                        {featuredProducts.map((product, i) => (
+                            <motion.div
+                                key={product.id}
+                                initial={{ opacity: 0, y: 30 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.6, delay: i * 0.1 }}
+                                className="product-card"
+                                style={{ padding: 0, display: 'flex', flexDirection: 'column', position: 'relative', background: 'transparent' }}
+                            >
 
                                 {/* Image & Quick View Hover */}
-                                <div style={{ position: 'relative', height: '350px', overflow: 'hidden' }} className="image-container">
-                                    <span style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'white', color: 'var(--color-secondary)', padding: '0.25rem 0.75rem', borderRadius: 'var(--radius-full)', fontSize: '0.8rem', fontWeight: 700, zIndex: 2 }}>
+                                <div style={{ position: 'relative', height: '400px', overflow: 'hidden', borderRadius: '4px', marginBottom: '1.5rem' }} className="image-container">
+                                    <span style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(4px)', color: 'var(--color-primary)', padding: '0.3rem 0.8rem', borderRadius: '2px', fontSize: '0.75rem', fontWeight: 600, zIndex: 2, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                                         {product.category}
                                     </span>
-                                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1)' }} className="product-image" />
+                                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)' }} className="product-image" />
 
                                     {/* Overlay Actions */}
-                                    <div className="overlay-actions" style={{ position: 'absolute', bottom: '-4rem', left: 0, right: 0, padding: '1rem', background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', display: 'flex', gap: '0.5rem', transition: 'bottom 0.3s ease', zIndex: 2 }}>
-                                        <button className="btn btn-primary" style={{ flex: 1, padding: '0.75rem' }} onClick={() => handleAddToCart(product.name)}>
+                                    <div className="overlay-actions" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem', background: 'linear-gradient(transparent, rgba(0,0,0,0.4))', display: 'flex', gap: '0.5rem', zIndex: 2, opacity: 0, transform: 'translateY(10px)', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
+                                        <button className="btn btn-primary" style={{ flex: 1, padding: '0.8rem', background: 'white', color: 'var(--color-primary)', borderRadius: '2px' }} onClick={() => handleAddToCart(product.name)}>
                                             <ShoppingBag size={18} /> Quick Add
                                         </button>
-                                        <button className="btn" style={{ background: 'white', color: 'var(--color-secondary)', padding: '0.75rem' }}>
+                                        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', color: 'white', padding: '0.8rem', borderRadius: '2px' }}>
                                             <Eye size={18} />
                                         </button>
                                     </div>
                                 </div>
 
                                 {/* Content */}
-                                <div style={{ padding: '1.5rem', flex: 1, display: 'flex', flexDirection: 'column' }}>
+                                <div style={{ display: 'flex', flexDirection: 'column' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
-                                        <h3 style={{ fontSize: '1.25rem', fontWeight: 700, color: 'var(--color-secondary)', lineHeight: 1.3 }}>{product.name}</h3>
+                                        <h3 style={{ fontSize: '1.2rem', fontWeight: 500, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)' }}>{product.name}</h3>
+                                        <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-primary)' }}>${product.price}</span>
                                     </div>
-                                    <p style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem', marginBottom: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                        <Star size={16} fill="var(--color-accent)" color="var(--color-accent)" /> By {product.artisan}
+                                    <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 300 }}>
+                                        <Star size={14} fill="var(--color-secondary)" color="var(--color-secondary)" /> Artisan {product.artisan}
                                     </p>
-                                    <div style={{ marginTop: 'auto', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                        <span style={{ fontSize: '1.5rem', fontWeight: 800, color: 'var(--color-primary)' }}>${product.price}</span>
-                                        <span style={{ fontSize: '0.8rem', color: product.stock > 5 ? '#065f46' : '#991b1b', background: product.stock > 5 ? '#e2f5e9' : '#fee2e2', padding: '0.25rem 0.5rem', borderRadius: '4px', fontWeight: 600 }}>
-                                            {product.stock} in stock
-                                        </span>
-                                    </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* Explore Categories */}
-            <section style={{ padding: '6rem 0', background: 'white' }}>
+            <section style={{ padding: '8rem 0', background: 'white' }}>
                 <div className="container">
-                    <div style={{ textAlign: 'center', marginBottom: '3rem' }}>
-                        <h2 style={{ fontSize: '2.5rem', color: 'var(--color-secondary)' }}>Explore by Craft</h2>
-                    </div>
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
-                        {categories.map(cat => (
-                            <div key={cat.id} className="category-card" style={{
-                                position: 'relative', borderRadius: 'var(--radius-lg)', overflow: 'hidden', height: '300px', cursor: 'pointer', boxShadow: 'var(--shadow-md)'
-                            }}>
-                                <img src={cat.image} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease' }} className="cat-image" />
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+                        variants={fadeUpVariant}
+                        style={{ textAlign: 'center', marginBottom: '4rem' }}
+                    >
+                        <h2 style={{ fontSize: '3rem', color: 'var(--color-primary)', fontWeight: 400 }}>Explore by Craft</h2>
+                    </motion.div>
+
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
+                        {categories.map((cat, i) => (
+                            <motion.div
+                                key={cat.id}
+                                initial={{ opacity: 0, scale: 0.95 }}
+                                whileInView={{ opacity: 1, scale: 1 }}
+                                viewport={{ once: true, margin: "-50px" }}
+                                transition={{ duration: 0.6, delay: i * 0.1 }}
+                                className="category-card" style={{
+                                    position: 'relative', overflow: 'hidden', height: '400px', cursor: 'pointer', borderRadius: '4px'
+                                }}>
+                                <img src={cat.image} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s ease' }} className="cat-image" />
                                 <div style={{
-                                    position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2rem 1.5rem',
-                                    background: 'linear-gradient(transparent, rgba(0,0,0,0.85))', color: 'white',
+                                    position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2.5rem 2rem',
+                                    background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white',
                                     display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', zIndex: 2
                                 }}>
-                                    <h3 style={{ fontSize: '1.5rem', fontWeight: '600' }}>{cat.name}</h3>
-                                    <div className="cat-arrow" style={{ background: 'var(--color-primary)', padding: '0.5rem', borderRadius: '50%', display: 'flex' }}>
-                                        <ArrowRight size={20} />
+                                    <h3 style={{ fontSize: '1.8rem', fontWeight: '400', fontFamily: 'var(--font-serif)', letterSpacing: '0.02em' }}>{cat.name}</h3>
+                                    <div className="cat-arrow" style={{ padding: '0.5rem', display: 'flex', transition: 'transform 0.3s ease' }}>
+                                        <ArrowRight size={24} color="white" />
                                     </div>
                                 </div>
-                            </div>
+                            </motion.div>
                         ))}
                     </div>
                 </div>
             </section>
 
             {/* Newsletter */}
-            <section style={{ padding: '6rem 0', background: 'var(--color-secondary)', color: 'white' }}>
+            <section style={{ padding: '8rem 0', background: 'var(--color-primary)', color: 'white' }}>
                 <div className="container" style={{ textAlign: 'center', maxWidth: '800px' }}>
-                    <h2 style={{ fontSize: '3rem', fontWeight: 800, marginBottom: '1.5rem' }}>Join the Handloom Movement</h2>
-                    <p style={{ fontSize: '1.2rem', color: 'rgba(255,255,255,0.8)', marginBottom: '3rem' }}>
-                        Subscribe to get exclusive early access to new collections and artisanal stories. Get 10% off your first authentic handloom purchase.
-                    </p>
-                    <form style={{ display: 'flex', gap: '1rem', maxWidth: '600px', margin: '0 auto' }} onSubmit={e => { e.preventDefault(); alert('Subscribed successfully!'); }}>
-                        <input type="email" placeholder="Enter your email address" style={{ flex: 1, padding: '1.25rem 1.5rem', borderRadius: 'var(--radius-full)', border: 'none', fontSize: '1.1rem', outline: 'none' }} required />
-                        <button type="submit" className="btn btn-primary" style={{ padding: '1.25rem 2.5rem', border: '2px solid var(--color-primary)' }}>Subscribe</button>
-                    </form>
+                    <motion.div
+                        initial={{ opacity: 0, y: 30 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.8 }}
+                    >
+                        <h2 style={{ fontSize: '3.5rem', fontWeight: 400, marginBottom: '1.5rem', color: 'white', fontFamily: 'var(--font-serif)' }}>Join the Movement</h2>
+                        <p style={{ fontSize: '1.1rem', color: 'rgba(255,255,255,0.7)', marginBottom: '3rem', fontWeight: 300, lineHeight: 1.8 }}>
+                            Subscribe to get exclusive early access to new collections and artisanal stories. Get 10% off your first authentic handloom purchase.
+                        </p>
+                        <form style={{ display: 'flex', gap: '0.5rem', maxWidth: '500px', margin: '0 auto', background: 'rgba(255,255,255,0.1)', padding: '0.5rem', borderRadius: 'var(--radius-full)' }} onSubmit={e => { e.preventDefault(); alert('Subscribed successfully!'); }}>
+                            <input type="email" placeholder="Email address..." style={{ flex: 1, padding: '1rem 1.5rem', borderRadius: 'var(--radius-full)', border: 'none', fontSize: '1rem', outline: 'none', background: 'transparent', color: 'white' }} required />
+                            <button type="submit" className="btn" style={{ padding: '1rem 2rem', background: 'white', color: 'var(--color-primary)', borderRadius: 'var(--radius-full)' }}>Subscribe</button>
+                        </form>
+                    </motion.div>
                 </div>
             </section>
 
             {/* Dynamic CSS injections for hover effects */}
             <style>{`
-        .product-card:hover .product-image { transform: scale(1.08); }
-        .product-card:hover .overlay-actions { bottom: 0 !important; }
-        .category-card:hover .cat-image { transform: scale(1.05); }
-        .category-card .cat-arrow { transition: transform 0.3s ease; }
-        .category-card:hover .cat-arrow { transform: translateX(5px); }
-      `}</style>
+                .product-card:hover .product-image { transform: scale(1.05); }
+                .product-card:hover .overlay-actions { opacity: 1; transform: translateY(0); }
+                .category-card:hover .cat-image { transform: scale(1.08); }
+                .category-card:hover .cat-arrow { transform: translateX(8px); }
+                input::placeholder { color: rgba(255,255,255,0.5); }
+            `}</style>
         </div>
     );
 }
