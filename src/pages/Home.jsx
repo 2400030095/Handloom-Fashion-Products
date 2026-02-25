@@ -12,8 +12,8 @@ export default function Home() {
     const categories = [
         { id: 1, name: 'Sarees', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800' },
         { id: 2, name: 'Kurtas & Shirts', image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800' },
-        { id: 3, name: 'Home Decor', image: 'https://images.unsplash.com/photo-1575414003593-eea4025ea031?auto=format&fit=crop&q=80&w=800' },
-        { id: 4, name: 'Accessories', image: 'https://images.unsplash.com/photo-1584968153915-d7286ab2e535?auto=format&fit=crop&q=80&w=800' }
+        { id: 3, name: 'Home Decor', image: 'https://images.unsplash.com/photo-1580974582391-a6649c80a876?auto=format&fit=crop&q=80&w=800' },
+        { id: 4, name: 'Accessories', image: 'https://images.unsplash.com/photo-1614144362174-8c886e35593c?auto=format&fit=crop&q=80&w=800' }
     ];
 
     const handleAddToCart = (productName) => {
