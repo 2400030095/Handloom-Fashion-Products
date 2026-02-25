@@ -171,7 +171,15 @@ export default function ArtisanDashboard() {
                                     {products.map(product => (
                                         <tr key={product.id} style={{ borderBottom: '1px solid var(--color-border)' }}>
                                             <td style={{ padding: '1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                <img src={product.image} alt={product.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }} />
+                                                <img src={product.image} alt={product.name} style={{ width: '40px', height: '40px', objectFit: 'cover', borderRadius: '4px' }}
+                                                    onError={(e) => {
+                                                        const tried = parseInt(e.target.dataset.tried || '0');
+                                                        if (tried < product.alternateImages?.length) {
+                                                            e.target.dataset.tried = (tried + 1).toString();
+                                                            e.target.src = product.alternateImages[tried];
+                                                        }
+                                                    }}
+                                                />
                                                 <span style={{ fontWeight: '500' }}>{product.name}</span>
                                             </td>
                                             <td style={{ padding: '1rem', color: 'var(--color-text-muted)' }}>{product.category}</td>

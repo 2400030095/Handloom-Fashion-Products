@@ -82,7 +82,15 @@ export default function BuyerDashboard() {
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: '2rem' }}>
                             {mockProducts.map(product => (
                                 <div key={product.id} className="card product-card" style={{ display: 'flex', flexDirection: 'column', padding: 0, overflow: 'hidden' }}>
-                                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '220px', objectFit: 'cover' }} />
+                                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '220px', objectFit: 'cover' }}
+                                        onError={(e) => {
+                                            const tried = parseInt(e.target.dataset.tried || '0');
+                                            if (tried < product.alternateImages?.length) {
+                                                e.target.dataset.tried = (tried + 1).toString();
+                                                e.target.src = product.alternateImages[tried];
+                                            }
+                                        }}
+                                    />
                                     <div style={{ padding: '1.5rem', display: 'flex', flexDirection: 'column', flex: 1 }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                                             <h3 style={{ fontSize: '1.25rem', fontWeight: '600', lineHeight: 1.2 }}>{product.name}</h3>
@@ -111,7 +119,15 @@ export default function BuyerDashboard() {
                                     {cart.map(item => (
                                         <li key={item.id} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1rem', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-md)' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                                                <img src={item.image} alt={item.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }} />
+                                                <img src={item.image} alt={item.name} style={{ width: '60px', height: '60px', objectFit: 'cover', borderRadius: 'var(--radius-sm)' }}
+                                                    onError={(e) => {
+                                                        const tried = parseInt(e.target.dataset.tried || '0');
+                                                        if (tried < item.alternateImages?.length) {
+                                                            e.target.dataset.tried = (tried + 1).toString();
+                                                            e.target.src = item.alternateImages[tried];
+                                                        }
+                                                    }}
+                                                />
                                                 <div>
                                                     <p style={{ fontWeight: '600' }}>{item.name}</p>
                                                     <p style={{ fontSize: '0.875rem', color: 'var(--color-text-muted)' }}>Qty: {item.qty} x ${item.price}</p>

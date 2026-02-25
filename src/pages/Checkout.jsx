@@ -161,7 +161,7 @@ export default function Checkout() {
 
                                 <button onClick={handlePlaceOrder} disabled={loading}
                                     style={{ marginTop: '2rem', width: '100%', padding: '1.1rem', background: '#16a34a', color: 'white', border: 'none', borderRadius: 'var(--radius-full)', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem' }}>
-                                    {loading ? 'Placing Order...' : `✓ Place Order — $${cartTotal.toFixed(2)}`}
+                                    {loading ? 'Placing Order...' : `✓ Place Order — ₹${cartTotal.toFixed(2)}`}
                                 </button>
                                 <button onClick={() => setStep('address')} style={{ marginTop: '1rem', width: '100%', padding: '0.8rem', background: 'none', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-full)', color: 'var(--color-text-muted)', cursor: 'pointer' }}>
                                     ← Back to Address
@@ -175,7 +175,15 @@ export default function Checkout() {
                         <h3 style={{ fontWeight: 600, marginBottom: '1.5rem', color: 'var(--color-primary)' }}>Your Order</h3>
                         {cartItems.map(item => (
                             <div key={item.id} style={{ display: 'flex', gap: '1rem', marginBottom: '1.25rem', alignItems: 'center' }}>
-                                <img src={item.image} alt={item.name} style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }} />
+                                <img src={item.image} alt={item.name} style={{ width: '56px', height: '56px', objectFit: 'cover', borderRadius: '6px', flexShrink: 0 }}
+                                    onError={(e) => {
+                                        const tried = parseInt(e.target.dataset.tried || '0');
+                                        if (tried < item.alternateImages?.length) {
+                                            e.target.dataset.tried = (tried + 1).toString();
+                                            e.target.src = item.alternateImages[tried];
+                                        }
+                                    }}
+                                />
                                 <div style={{ flex: 1, minWidth: 0 }}>
                                     <p style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--color-primary)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{item.name}</p>
                                     <p style={{ fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Qty: {item.qty}</p>

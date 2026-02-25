@@ -57,9 +57,10 @@ export default function ProductDetail() {
                         <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: 'var(--shadow-xl)', position: 'relative', marginBottom: '1rem' }}>
                             <img src={selectedImage} alt={product.name}
                                 onError={(e) => {
-                                    if (!e.target.dataset.tried && product.alternateImages?.[0]) {
-                                        e.target.dataset.tried = '1';
-                                        e.target.src = product.alternateImages[0];
+                                    const tried = parseInt(e.target.dataset.tried || '0');
+                                    if (tried < product.alternateImages?.length) {
+                                        e.target.dataset.tried = (tried + 1).toString();
+                                        e.target.src = product.alternateImages[tried];
                                     }
                                 }}
                                 style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', transition: 'opacity 0.3s' }}
@@ -83,7 +84,16 @@ export default function ProductDetail() {
                                         }}
                                     >
                                         <img src={img} alt={`Thumbnail ${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                                            onError={(e) => e.target.style.display = 'none'}
+                                            onError={(e) => {
+                                                const tried = parseInt(e.target.dataset.tried || '0');
+                                                const product = mockProducts.find(p => p.image === img || p.alternateImages?.includes(img));
+                                                if (product && tried < product.alternateImages?.length) {
+                                                    e.target.dataset.tried = (tried + 1).toString();
+                                                    e.target.src = product.alternateImages[tried];
+                                                } else {
+                                                    e.target.style.display = 'none';
+                                                }
+                                            }}
                                         />
                                     </button>
                                 ))}
@@ -103,7 +113,7 @@ export default function ProductDetail() {
                             <span style={{ color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>4.9 (128 reviews)</span>
                         </div>
 
-                        <p style={{ fontSize: '3rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1.5rem', lineHeight: 1 }}>${product.price}</p>
+                        <p style={{ fontSize: '3rem', fontWeight: 700, color: 'var(--color-primary)', marginBottom: '1.5rem', lineHeight: 1 }}>₹{product.price}</p>
 
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', padding: '1.2rem', background: 'rgba(155, 112, 78, 0.08)', borderRadius: '8px', marginBottom: '2rem' }}>
                             <div style={{ width: '42px', height: '42px', borderRadius: '50%', background: 'var(--color-accent)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
@@ -156,7 +166,7 @@ export default function ProductDetail() {
                         {/* Trust Badges */}
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
                             {[
-                                { icon: <Truck size={18} />, text: 'Free Shipping', sub: 'Orders over $50' },
+                                { icon: <Truck size={18} />, text: 'Free Shipping', sub: 'Orders over ₹4150' },
                                 { icon: <ShieldCheck size={18} />, text: 'Authentic', sub: 'Verified Handloom' },
                                 { icon: <RefreshCcw size={18} />, text: 'Easy Returns', sub: '30-day policy' }
                             ].map((badge, i) => (
@@ -182,12 +192,16 @@ export default function ProductDetail() {
                                         onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}>
                                         <img src={p.image} alt={p.name}
                                             onError={(e) => {
-                                                if (p.alternateImages?.[0]) e.target.src = p.alternateImages[0];
+                                                const tried = parseInt(e.target.dataset.tried || '0');
+                                                if (tried < p.alternateImages?.length) {
+                                                    e.target.dataset.tried = (tried + 1).toString();
+                                                    e.target.src = p.alternateImages[tried];
+                                                }
                                             }}
                                             style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
                                         <div style={{ padding: '1rem' }}>
                                             <h4 style={{ fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.3rem' }}>{p.name}</h4>
-                                            <p style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>${p.price}</p>
+                                            <p style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>₹{p.price}</p>
                                         </div>
                                     </div>
                                 </Link>

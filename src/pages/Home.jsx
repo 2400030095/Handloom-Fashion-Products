@@ -20,10 +20,10 @@ export default function Home() {
     const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 4);
 
     const categories = [
-        { id: 1, name: 'Sarees', image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=800' },
-        { id: 2, name: 'Kurtas & Shirts', image: 'https://images.unsplash.com/photo-1595341595011-82d8c3066d4f?auto=format&fit=crop&q=80&w=800' },
-        { id: 3, name: 'Home Decor', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800' },
-        { id: 4, name: 'Accessories', image: 'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&q=80&w=800' }
+        { id: 1, name: 'Sarees', image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=800', alternateImages: ['https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1583391733956-340277353f4a?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1596443657302-6014cd700bf4?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1582294157502-d922a946654e?auto=format&fit=crop&q=80&w=800'] },
+        { id: 2, name: 'Kurtas & Shirts', image: 'https://images.unsplash.com/photo-1595341595011-82d8c3066d4f?auto=format&fit=crop&q=80&w=800', alternateImages: ['https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1581005896327-0cfd68f74a00?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&q=80&w=800'] },
+        { id: 3, name: 'Home Decor', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800', alternateImages: ['https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1586023492125-27b2c045efd7?auto=format&fit=crop&q=80&w=800'] },
+        { id: 4, name: 'Accessories', image: 'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&q=80&w=800', alternateImages: ['https://images.unsplash.com/photo-1614144362174-8c886e35593c?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1600100778942-df21a0070747?auto=format&fit=crop&q=80&w=800'] }
     ];
 
     const handleAddToCart = (productName, product) => {
@@ -143,6 +143,14 @@ export default function Home() {
                                 width: '70%', height: '85%', objectFit: 'cover', borderRadius: '4px',
                                 boxShadow: 'var(--shadow-xl)', position: 'absolute', right: '0', zIndex: 1,
                             }}
+                            onError={(e) => {
+                                const alternates = ['https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1583391733956-340277353f4a?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1596443657302-6014cd700bf4?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1582294157502-d922a946654e?auto=format&fit=crop&q=80&w=800'];
+                                const tried = parseInt(e.target.dataset.tried || '0');
+                                if (tried < alternates.length) {
+                                    e.target.dataset.tried = (tried + 1).toString();
+                                    e.target.src = alternates[tried];
+                                }
+                            }}
                         />
                         <motion.img
                             src="https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=600"
@@ -153,6 +161,14 @@ export default function Home() {
                                 width: '55%', height: '65%', objectFit: 'cover', borderRadius: '4px',
                                 boxShadow: 'var(--shadow-lg)', position: 'absolute', left: '-5%', bottom: '5%', zIndex: 2,
                                 border: '12px solid var(--color-bg-main)'
+                            }}
+                            onError={(e) => {
+                                const alternates = ['https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1583391733956-340277353f4a?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1596443657302-6014cd700bf4?auto=format&fit=crop&q=80&w=800', 'https://images.unsplash.com/photo-1582294157502-d922a946654e?auto=format&fit=crop&q=80&w=800'];
+                                const tried = parseInt(e.target.dataset.tried || '0');
+                                if (tried < alternates.length) {
+                                    e.target.dataset.tried = (tried + 1).toString();
+                                    e.target.src = alternates[tried];
+                                }
                             }}
                         />
                         {/* Glass badge */}
@@ -256,12 +272,10 @@ export default function Home() {
                                     </span>
                                     <img src={product.image} alt={product.name}
                                         onError={(e) => {
-                                            if (!e.target.dataset.tried && product.alternateImages?.[0]) {
-                                                e.target.dataset.tried = '1';
-                                                e.target.src = product.alternateImages[0];
-                                            } else if (e.target.dataset.tried === '1' && product.alternateImages?.[1]) {
-                                                e.target.dataset.tried = '2';
-                                                e.target.src = product.alternateImages[1];
+                                            const tried = parseInt(e.target.dataset.tried || '0');
+                                            if (tried < product.alternateImages?.length) {
+                                                e.target.dataset.tried = (tried + 1).toString();
+                                                e.target.src = product.alternateImages[tried];
                                             }
                                         }}
                                         style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)' }} className="product-image"
@@ -282,7 +296,7 @@ export default function Home() {
                                 <Link to={`/product/${product.id}`} style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                                         <h3 style={{ fontSize: '1.2rem', fontWeight: 500, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)' }}>{product.name}</h3>
-                                        <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-primary)' }}>${product.price}</span>
+                                        <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-primary)' }}>₹{product.price}</span>
                                     </div>
                                     <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 300 }}>
                                         <Star size={14} fill="var(--color-secondary)" color="var(--color-secondary)" /> Artisan {product.artisan}
@@ -341,7 +355,15 @@ export default function Home() {
                                 className="category-card" style={{
                                     position: 'relative', overflow: 'hidden', height: '400px', cursor: 'pointer', borderRadius: '4px'
                                 }}>
-                                <img src={cat.image} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s ease' }} className="cat-image" />
+                                <img src={cat.image} alt={cat.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s ease' }} className="cat-image"
+                                    onError={(e) => {
+                                        const tried = parseInt(e.target.dataset.tried || '0');
+                                        if (tried < cat.alternateImages?.length) {
+                                            e.target.dataset.tried = (tried + 1).toString();
+                                            e.target.src = cat.alternateImages[tried];
+                                        }
+                                    }}
+                                />
                                 <div style={{
                                     position: 'absolute', bottom: 0, left: 0, right: 0, padding: '2.5rem 2rem',
                                     background: 'linear-gradient(transparent, rgba(0,0,0,0.7))', color: 'white',

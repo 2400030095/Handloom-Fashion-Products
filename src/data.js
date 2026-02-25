@@ -4,7 +4,7 @@ export const mockProducts = [
         name: 'Kanjeevaram Royal Silk Saree',
         artisan: 'Ramesh Weavers',
         state: 'Tamil Nadu',
-        price: 150.00,
+        price: 12450.00,
         category: 'Sarees',
         image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -22,7 +22,7 @@ export const mockProducts = [
         name: 'Ikat Cotton Men\'s Kurta',
         artisan: 'Pochampally Crafts',
         state: 'Telangana',
-        price: 45.00,
+        price: 3735.00,
         category: 'Kurtas',
         image: 'https://images.unsplash.com/photo-1595341595011-82d8c3066d4f?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -40,7 +40,7 @@ export const mockProducts = [
         name: 'Pure Pashmina Wool Shawl',
         artisan: 'Himalayan Looms',
         state: 'Jammu & Kashmir',
-        price: 200.00,
+        price: 16600.00,
         category: 'Shawls',
         image: 'https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -58,7 +58,7 @@ export const mockProducts = [
         name: 'Banarasi Brocade Dupatta',
         artisan: 'Varanasi Weaves',
         state: 'Uttar Pradesh',
-        price: 85.00,
+        price: 7055.00,
         category: 'Accessories',
         image: 'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -76,7 +76,7 @@ export const mockProducts = [
         name: 'Hand-Spun Khadi Linen Shirt',
         artisan: 'Eco Threads Co.',
         state: 'Gujarat',
-        price: 55.00,
+        price: 4565.00,
         category: 'Shirts',
         image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -94,7 +94,7 @@ export const mockProducts = [
         name: 'Jamdani Fine Cotton Saree',
         artisan: 'Bengal Threads',
         state: 'West Bengal',
-        price: 120.00,
+        price: 9960.00,
         category: 'Sarees',
         image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -112,7 +112,7 @@ export const mockProducts = [
         name: 'Handwoven Kilim Rug',
         artisan: 'Mirzapur Looms',
         state: 'Uttar Pradesh',
-        price: 250.00,
+        price: 20750.00,
         category: 'Home Decor',
         image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -130,7 +130,7 @@ export const mockProducts = [
         name: 'Embroidered Cushion Covers',
         artisan: 'Kutch Artisans',
         state: 'Gujarat',
-        price: 35.00,
+        price: 2905.00,
         category: 'Home Decor',
         image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -148,7 +148,7 @@ export const mockProducts = [
         name: 'Kalamkari Block Print Tote',
         artisan: 'Andhra Crafts',
         state: 'Andhra Pradesh',
-        price: 40.00,
+        price: 3320.00,
         category: 'Bags',
         image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -166,7 +166,7 @@ export const mockProducts = [
         name: 'Silk Ikat Scarf',
         artisan: 'Odisha Weaves',
         state: 'Odisha',
-        price: 65.00,
+        price: 5395.00,
         category: 'Accessories',
         image: 'https://images.unsplash.com/photo-1614144362174-8c886e35593c?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -184,7 +184,7 @@ export const mockProducts = [
         name: 'Indigo Shibori Bedspread',
         artisan: 'Rajasthan Prints',
         state: 'Rajasthan',
-        price: 90.00,
+        price: 7470.00,
         category: 'Home Decor',
         image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -202,7 +202,7 @@ export const mockProducts = [
         name: 'Hand-Painted Pattachitra Wall Art',
         artisan: 'Raghurajpur Crafts',
         state: 'Odisha',
-        price: 110.00,
+        price: 9130.00,
         category: 'Wall Art',
         image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -220,7 +220,7 @@ export const mockProducts = [
         name: 'Terracotta Blue Pottery Vase',
         artisan: 'Jaipur Blue Pottery',
         state: 'Rajasthan',
-        price: 45.00,
+        price: 3735.00,
         category: 'Pottery',
         image: 'https://images.unsplash.com/photo-1612196808214-b9e1d6145ca8?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -238,7 +238,7 @@ export const mockProducts = [
         name: 'Zari Bordered Chanderi Suit Set',
         artisan: 'Chanderi Weavers',
         state: 'Madhya Pradesh',
-        price: 135.00,
+        price: 11205.00,
         category: 'Sarees',
         image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -256,7 +256,7 @@ export const mockProducts = [
         name: 'Muga Silk Stole',
         artisan: 'Assam Golden Threads',
         state: 'Assam',
-        price: 180.00,
+        price: 14940.00,
         category: 'Shawls',
         image: 'https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=800',
         alternateImages: [
@@ -272,6 +272,6 @@ export const mockProducts = [
 ];
 
 export const mockOrders = [
-    { id: 'ORD-8923', date: '2023-11-20', total: 150.00, status: 'Delivered', items: [{ name: 'Kanjeevaram Royal Silk Saree', qty: 1 }] },
-    { id: 'ORD-8945', date: '2023-12-15', total: 45.00, status: 'Shipped', items: [{ name: 'Ikat Cotton Men\'s Kurta', qty: 1 }] }
+    { id: 'ORD-8923', date: '2023-11-20', total: 12450.00, status: 'Delivered', items: [{ name: 'Kanjeevaram Royal Silk Saree', qty: 1 }] },
+    { id: 'ORD-8945', date: '2023-12-15', total: 3735.00, status: 'Shipped', items: [{ name: 'Ikat Cotton Men\'s Kurta', qty: 1 }] }
 ];

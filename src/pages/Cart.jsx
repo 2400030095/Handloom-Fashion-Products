@@ -42,7 +42,15 @@ export default function Cart() {
                                     style={{ background: 'white', borderRadius: '12px', padding: '1.5rem', display: 'flex', gap: '1.5rem', marginBottom: '1.5rem', boxShadow: 'var(--shadow-sm)', alignItems: 'flex-start' }}
                                 >
                                     <Link to={`/product/${item.id}`}>
-                                        <img src={item.image} alt={item.name} style={{ width: '120px', height: '140px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }} />
+                                        <img src={item.image} alt={item.name} style={{ width: '120px', height: '140px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
+                                            onError={(e) => {
+                                                const tried = parseInt(e.target.dataset.tried || '0');
+                                                if (tried < item.alternateImages?.length) {
+                                                    e.target.dataset.tried = (tried + 1).toString();
+                                                    e.target.src = item.alternateImages[tried];
+                                                }
+                                            }}
+                                        />
                                     </Link>
                                     <div style={{ flex: 1 }}>
                                         <span style={{ fontSize: '0.75rem', color: 'var(--color-secondary)', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.05em' }}>{item.category}</span>

@@ -117,12 +117,10 @@ export default function Collections() {
                                     <Link to={`/product/${product.id}`} style={{ display: 'block', position: 'relative', overflow: 'hidden', height: '280px' }}>
                                         <img src={product.image} alt={product.name} className="product-image"
                                             onError={(e) => {
-                                                if (!e.target.dataset.tried && product.alternateImages?.[0]) {
-                                                    e.target.dataset.tried = '1';
-                                                    e.target.src = product.alternateImages[0];
-                                                } else if (e.target.dataset.tried === '1' && product.alternateImages?.[1]) {
-                                                    e.target.dataset.tried = '2';
-                                                    e.target.src = product.alternateImages[1];
+                                                const tried = parseInt(e.target.dataset.tried || '0');
+                                                if (tried < product.alternateImages?.length) {
+                                                    e.target.dataset.tried = (tried + 1).toString();
+                                                    e.target.src = product.alternateImages[tried];
                                                 }
                                             }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease' }} />
@@ -143,7 +141,7 @@ export default function Collections() {
                                             {product.artisan}
                                         </p>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: 'auto' }}>
-                                            <span style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-primary)' }}>${product.price}</span>
+                                            <span style={{ fontSize: '1.3rem', fontWeight: 700, color: 'var(--color-primary)' }}>₹{product.price}</span>
                                             <button onClick={() => handleAddToCart(product)}
                                                 style={{
                                                     padding: '0.65rem 1.3rem', borderRadius: 'var(--radius-full)', border: '1.5px solid var(--color-primary)',
