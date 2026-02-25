@@ -3,11 +3,13 @@ import { Link, useNavigate } from 'react-router-dom';
 import { ArrowRight, Star, Truck, ShieldCheck, Heart, ShoppingBag, Eye, Leaf, Infinity, Award } from 'lucide-react';
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { mockProducts } from '../data';
+import { useCart } from '../context/CartContext';
 
 export default function Home() {
     const navigate = useNavigate();
     const [toastMessage, setToastMessage] = useState('');
     const { scrollY } = useScroll();
+    const { addToCart } = useCart();
 
     // Parallax effect for hero section
     const y1 = useTransform(scrollY, [0, 1000], [0, 200]);
@@ -23,8 +25,9 @@ export default function Home() {
         { id: 4, name: 'Accessories', image: 'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&q=80&w=800' }
     ];
 
-    const handleAddToCart = (productName) => {
-        setToastMessage(`Added ${productName} to your cart!`);
+    const handleAddToCart = (productName, product) => {
+        addToCart(product);
+        setToastMessage(`${productName} added to cart!`);
         setTimeout(() => setToastMessage(''), 3000);
     };
 
@@ -102,12 +105,10 @@ export default function Home() {
                         </motion.p>
 
                         <motion.div variants={fadeUpVariant} style={{ display: 'flex', gap: '1.5rem', flexWrap: 'wrap' }}>
-                            <button onClick={() => {
-                                document.getElementById('trending').scrollIntoView({ behavior: 'smooth' });
-                            }} className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem' }}>
+                            <Link to="/collections" className="btn btn-primary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem', display: 'flex', alignItems: 'center', gap: '0.5rem', textDecoration: 'none' }}>
                                 Shop Collection <ArrowRight size={18} />
-                            </button>
-                            <Link to="/login" className="btn btn-secondary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem', border: '1px solid transparent', borderBottom: '1px solid var(--color-border)', borderRadius: 0 }}>
+                            </Link>
+                            <Link to="/login" className="btn btn-secondary" style={{ padding: '1.2rem 2.5rem', fontSize: '1rem', border: '1px solid transparent', borderBottom: '1px solid var(--color-border)', borderRadius: 0, textDecoration: 'none' }}>
                                 Artisan Portal
                             </Link>
                         </motion.div>
@@ -256,17 +257,17 @@ export default function Home() {
 
                                     {/* Overlay Actions */}
                                     <div className="overlay-actions" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem', background: 'linear-gradient(transparent, rgba(0,0,0,0.4))', display: 'flex', gap: '0.5rem', zIndex: 2, opacity: 0, transform: 'translateY(10px)', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
-                                        <button className="btn btn-primary" style={{ flex: 1, padding: '0.8rem', background: 'white', color: 'var(--color-primary)', borderRadius: '2px' }} onClick={() => handleAddToCart(product.name)}>
+                                        <button className="btn btn-primary" style={{ flex: 1, padding: '0.8rem', background: 'white', color: 'var(--color-primary)', borderRadius: '2px' }} onClick={() => handleAddToCart(product.name, product)}>
                                             <ShoppingBag size={18} /> Quick Add
                                         </button>
-                                        <button className="btn" style={{ background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', color: 'white', padding: '0.8rem', borderRadius: '2px' }}>
+                                        <Link to={`/product/${product.id}`} style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'rgba(255,255,255,0.2)', backdropFilter: 'blur(4px)', color: 'white', padding: '0.8rem', borderRadius: '2px', textDecoration: 'none' }}>
                                             <Eye size={18} />
-                                        </button>
+                                        </Link>
                                     </div>
                                 </div>
 
                                 {/* Content */}
-                                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                                <Link to={`/product/${product.id}`} style={{ display: 'flex', flexDirection: 'column', textDecoration: 'none' }}>
                                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.5rem' }}>
                                         <h3 style={{ fontSize: '1.2rem', fontWeight: 500, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)' }}>{product.name}</h3>
                                         <span style={{ fontSize: '1.1rem', fontWeight: 600, color: 'var(--color-primary)' }}>${product.price}</span>
@@ -274,7 +275,7 @@ export default function Home() {
                                     <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: 300 }}>
                                         <Star size={14} fill="var(--color-secondary)" color="var(--color-secondary)" /> Artisan {product.artisan}
                                     </p>
-                                </div>
+                                </Link>
                             </motion.div>
                         ))}
                     </div>
