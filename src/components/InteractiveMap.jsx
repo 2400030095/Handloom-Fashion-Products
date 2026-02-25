@@ -12,6 +12,8 @@ const containerStyle = {
 
 const INDIA_CENTER = { lat: 22.5937, lng: 78.9629 };
 
+const LIBRARIES = ['marker'];
+
 const stateCenters = {
     'Rajasthan': { lat: 27.0238, lng: 74.2179 },
     'Gujarat': { lat: 22.2587, lng: 71.1924 },
@@ -53,7 +55,7 @@ export default function InteractiveMap() {
         id: 'google-map-script',
         // Loaded securely from environment variables (e.g., .env or .env.local)
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
-        libraries: ['marker']
+        libraries: LIBRARIES
     });
 
     const [map, setMap] = useState(null);
@@ -129,7 +131,7 @@ export default function InteractiveMap() {
                 content: markerElement,
                 title: state,
             });
-            marker.addListener('click', () => handleStateClick(state));
+            marker.addListener('gmp-click', () => handleStateClick(state));
             marker.addListener('mouseover', () => setHoveredStateMarker(state));
             marker.addListener('mouseout', () => setHoveredStateMarker(null));
             return marker;
@@ -156,7 +158,7 @@ export default function InteractiveMap() {
                 position: artisan.coords,
                 content: markerElement,
             });
-            marker.addListener('click', () => setSelectedArtisan(artisan));
+            marker.addListener('gmp-click', () => setSelectedArtisan(artisan));
             return marker;
         });
         return () => {
