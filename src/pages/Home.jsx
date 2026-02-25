@@ -17,10 +17,10 @@ export default function Home() {
     const featuredProducts = mockProducts.filter(p => p.featured).slice(0, 4);
 
     const categories = [
-        { id: 1, name: 'Sarees', image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800' },
-        { id: 2, name: 'Kurtas & Shirts', image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800' },
-        { id: 3, name: 'Home Decor', image: 'https://images.unsplash.com/photo-1580974582391-a6649c80a876?auto=format&fit=crop&q=80&w=800' },
-        { id: 4, name: 'Accessories', image: 'https://images.unsplash.com/photo-1614144362174-8c886e35593c?auto=format&fit=crop&q=80&w=800' }
+        { id: 1, name: 'Sarees', image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=800' },
+        { id: 2, name: 'Kurtas & Shirts', image: 'https://images.unsplash.com/photo-1595341595011-82d8c3066d4f?auto=format&fit=crop&q=80&w=800' },
+        { id: 3, name: 'Home Decor', image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800' },
+        { id: 4, name: 'Accessories', image: 'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&q=80&w=800' }
     ];
 
     const handleAddToCart = (productName) => {
@@ -92,7 +92,7 @@ export default function Home() {
                             </span>
                         </motion.div>
 
-                        <motion.h1 variants={fadeUpVariant} style={{ fontSize: '5rem', fontWeight: '400', lineHeight: '1.05', marginBottom: '1.5rem', color: 'var(--color-primary)', letterSpacing: '-0.02em' }}>
+                        <motion.h1 variants={fadeUpVariant} style={{ fontSize: '4rem', fontWeight: '400', lineHeight: '1.05', marginBottom: '1.5rem', color: 'var(--color-primary)', letterSpacing: '-0.02em' }}>
                             Woven with <span style={{ fontStyle: 'italic', color: 'var(--color-secondary)' }}>Tradition</span>,<br />
                             <span style={{ fontWeight: 600 }}>Tailored for the World.</span>
                         </motion.h1>
@@ -133,7 +133,7 @@ export default function Home() {
                         style={{ position: 'relative', height: '650px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
                     >
                         <motion.img
-                            src="https://images.unsplash.com/photo-1596484552834-6a58f850e0a1?auto=format&fit=crop&q=80&w=800"
+                            src="https://images.unsplash.com/photo-1583391733959-b1d6db0b5b15?auto=format&fit=crop&q=80&w=800"
                             alt="Jamdani Saree"
                             animate={{ y: [0, -15, 0] }}
                             transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
@@ -143,8 +143,8 @@ export default function Home() {
                             }}
                         />
                         <motion.img
-                            src="https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=600"
-                            alt="Khadi Shirt"
+                            src="https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=600"
+                            alt="Silk Saree"
                             animate={{ y: [0, 15, 0] }}
                             transition={{ duration: 9, repeat: Infinity, ease: "easeInOut", delay: 1 }}
                             style={{
@@ -206,14 +206,14 @@ export default function Home() {
                                 style={{ textAlign: 'center', padding: '2rem 1rem' }}
                             >
                                 <div style={{
-                                    color: 'var(--color-secondary)', width: '64px', height: '64px',
+                                    color: 'white', width: '64px', height: '64px',
                                     borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                                    margin: '0 auto 1.5rem', background: 'var(--color-bg-main)', border: '1px solid var(--color-border)'
+                                    margin: '0 auto 1.5rem', background: 'var(--color-secondary)', boxShadow: 'var(--shadow-md)'
                                 }}>
                                     <feature.icon size={28} strokeWidth={1.5} />
                                 </div>
-                                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--color-primary)', fontWeight: 600 }}>{feature.title}</h3>
-                                <p style={{ color: 'var(--color-text-muted)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 300 }}>{feature.desc}</p>
+                                <h3 style={{ fontSize: '1.25rem', marginBottom: '1rem', color: 'var(--color-primary)', fontWeight: 700 }}>{feature.title}</h3>
+                                <p style={{ color: 'var(--color-text-main)', fontSize: '0.95rem', lineHeight: 1.7, fontWeight: 400 }}>{feature.desc}</p>
                             </motion.div>
                         ))}
                     </div>
@@ -340,6 +340,49 @@ export default function Home() {
                     </motion.div>
                 </div>
             </section>
+
+            {/* Comprehensive Footer */}
+            <footer style={{ background: 'var(--color-primary-dark)', color: 'white', padding: '5rem 0 2rem 0' }}>
+                <div className="container" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '3rem', marginBottom: '3rem' }}>
+                    <div>
+                        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem' }}>
+                            <span style={{ fontSize: '1.8rem', fontWeight: 800, letterSpacing: '-0.03em', fontFamily: 'var(--font-serif)', color: 'white' }}>
+                                Handloom<span style={{ color: 'var(--color-secondary)' }}>.</span>
+                            </span>
+                        </Link>
+                        <p style={{ color: 'rgba(255,255,255,0.6)', fontSize: '0.9rem', lineHeight: 1.6, maxWidth: '300px' }}>Empowering artisans worldwide by connecting them directly with conscious consumers.</p>
+                    </div>
+                    <div>
+                        <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontWeight: 600 }}>Shop</h4>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Sarees</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Kurtas</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Home Decor</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Accessories</Link></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontWeight: 600 }}>About</h4>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Our Story</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Artisans</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Sustainability</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Contact</Link></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style={{ fontSize: '1.1rem', marginBottom: '1.5rem', fontWeight: 600 }}>Legal</h4>
+                        <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: '0.8rem' }}>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Terms of Service</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Privacy Policy</Link></li>
+                            <li><Link to="#" style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem', textDecoration: 'none' }}>Refund Policy</Link></li>
+                        </ul>
+                    </div>
+                </div>
+                <div className="container" style={{ borderTop: '1px solid rgba(255,255,255,0.1)', paddingTop: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)' }}>
+                    <p>&copy; {new Date().getFullYear()} Handloom. All rights reserved.</p>
+                </div>
+            </footer>
 
             {/* Dynamic CSS injections for hover effects */}
             <style>{`

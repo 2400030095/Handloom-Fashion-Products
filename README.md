@@ -42,4 +42,4 @@ Open your browser to the URL provided by Vite (typically `http://localhost:5173/
    - **Admin**: Moderate newly added products and manage active user suspensions.
 
 ## 🎨 Design Philosophy
-We avoided generic CSS frameworks like Tailwind to establish a truly bespoke "Handloom" identity. The application utilizes a warm, earthy color palette (`#8b5a2b`), the elegant `Outfit` typeface, subtle box-shadow depth (`var(--shadow-xl)`), and fluid hover interactions to ensure the digital experience matches the premium feel of the physical garments.
+We avoided generic CSS frameworks like Tailwind to establish a truly bespoke "Handloom" identity. The application utilizes a warm, earthy color palette (`#8b5a2b`), the elegant `Outfit` typeface, subtle box-shadow depth (`var(--shadow-xl)`), and fluid hover interactions to ensure the digital experience matches the premium feel of the physical garments

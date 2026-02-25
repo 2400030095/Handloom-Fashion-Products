@@ -60,7 +60,7 @@ export const mockProducts = [
         artisan: 'Bengal Threads, West Bengal',
         price: 120.00,
         category: 'Sarees',
-        image: 'https://images.unsplash.com/photo-1583391733959-b1d6db0b5b15?auto=format&fit=crop&q=80&w=800',
+        image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
         description: 'Feather-light fine cotton saree featuring exquisite Jamdani motifs woven seamlessly into the fabric.',
         stock: 6,
         featured: true,
