@@ -1,5 +1,5 @@
-import { useState, useMemo, useCallback } from 'react';
-import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-maps/api';
+import { useState, useMemo, useCallback, useEffect } from 'react';
+import { GoogleMap, useJsApiLoader, InfoWindow } from '@react-google-maps/api';
 import { mockProducts } from '../data';
 import { useNavigate } from 'react-router-dom';
 
@@ -111,6 +111,58 @@ export default function InteractiveMap() {
         return uniqueStates.filter(state => stateCenters[state]);
     }, []);
 
+    // State markers
+    useEffect(() => {
+        if (!map || selectedState) return;
+        const markers = statesWithArtisans.map(state => {
+            const markerElement = document.createElement('div');
+            markerElement.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#9B704E" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                </svg>
+            `;
+            const marker = new google.maps.marker.AdvancedMarkerElement({
+                map,
+                position: stateCenters[state],
+                content: markerElement,
+                title: state,
+            });
+            marker.addListener('click', () => handleStateClick(state));
+            marker.addListener('mouseover', () => setHoveredStateMarker(state));
+            marker.addListener('mouseout', () => setHoveredStateMarker(null));
+            return marker;
+        });
+        return () => {
+            markers.forEach(marker => marker.map = null);
+        };
+    }, [map, selectedState, statesWithArtisans]);
+
+    // Artisan markers
+    useEffect(() => {
+        if (!map || !selectedState) return;
+        const markers = artisanPins.map(artisan => {
+            const markerElement = document.createElement('div');
+            markerElement.innerHTML = `
+                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#1A1A1A" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <path d="M12 8v8"></path>
+                    <path d="M8 12h8"></path>
+                </svg>
+            `;
+            const marker = new google.maps.marker.AdvancedMarkerElement({
+                map,
+                position: artisan.coords,
+                content: markerElement,
+            });
+            marker.addListener('click', () => setSelectedArtisan(artisan));
+            return marker;
+        });
+        return () => {
+            markers.forEach(marker => marker.map = null);
+        };
+    }, [map, selectedState, artisanPins]);
+
     if (!isLoaded) return <div style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f0f0', borderRadius: '12px' }}>Loading Map...</div>;
 
     return (
@@ -151,55 +203,17 @@ export default function InteractiveMap() {
                     zoomControl: true
                 }}
             >
-                {/* 1. Statewide Pins (Shown when zoomed out) */}
-                {!selectedState && statesWithArtisans.map((state) => (
-                    <Marker
-                        key={state}
-                        position={stateCenters[state]}
-                        onClick={() => handleStateClick(state)}
-                        onMouseOver={() => setHoveredStateMarker(state)}
-                        onMouseOut={() => setHoveredStateMarker(null)}
-                        icon={{
-                            url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-                                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#9B704E" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                    <circle cx="12" cy="10" r="3"></circle>
-                                </svg>
-                            `),
-                            scaledSize: new window.google.maps.Size(40, 40)
-                        }}
-                    >
-                        {hoveredStateMarker === state && (
-                            <InfoWindow position={stateCenters[state]} onCloseClick={() => setHoveredStateMarker(null)}>
-                                <div style={{ padding: '0.2rem', color: 'var(--color-primary)' }}>
-                                    <h4 style={{ margin: 0, fontSize: '1.1rem' }}>{state}</h4>
-                                    <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Click to view artisans</p>
-                                </div>
-                            </InfoWindow>
-                        )}
-                    </Marker>
-                ))}
+                {/* InfoWindow for hovered state */}
+                {hoveredStateMarker && (
+                    <InfoWindow position={stateCenters[hoveredStateMarker]} onCloseClick={() => setHoveredStateMarker(null)}>
+                        <div style={{ padding: '0.2rem', color: 'var(--color-primary)' }}>
+                            <h4 style={{ margin: 0, fontSize: '1.1rem' }}>{hoveredStateMarker}</h4>
+                            <p style={{ margin: '0.2rem 0 0 0', fontSize: '0.8rem', color: 'var(--color-text-muted)' }}>Click to view artisans</p>
+                        </div>
+                    </InfoWindow>
+                )}
 
-                {/* 2. Artisan Pins (Shown when a state is selected) */}
-                {selectedState && artisanPins.map((artisan, index) => (
-                    <Marker
-                        key={`artisan-${index}`}
-                        position={artisan.coords}
-                        onClick={() => setSelectedArtisan(artisan)}
-                        icon={{
-                            url: "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(`
-                                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#1A1A1A" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <circle cx="12" cy="12" r="10"></circle>
-                                    <path d="M12 8v8"></path>
-                                    <path d="M8 12h8"></path>
-                                </svg>
-                            `),
-                            scaledSize: new window.google.maps.Size(32, 32)
-                        }}
-                    />
-                ))}
-
-                {/* Info Window for selected Artisan */}
+                {/* InfoWindow for selected Artisan */}
                 {selectedArtisan && (
                     <InfoWindow
                         position={selectedArtisan.coords}

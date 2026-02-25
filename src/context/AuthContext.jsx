@@ -4,14 +4,11 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    onAuthStateChanged,
-    GoogleAuthProvider,
-    signInWithPopup
+    onAuthStateChanged
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 const AuthContext = createContext();
-const googleProvider = new GoogleAuthProvider();
 
 export function AuthProvider({ children }) {
     const [user, setUser] = useState({ role: 'guest', name: 'Guest', uid: null, email: null });
@@ -77,38 +74,13 @@ export function AuthProvider({ children }) {
         await signOut(auth);
     };
 
-    const loginWithGoogle = async () => {
-        setAuthError('');
-        try {
-            const result = await signInWithPopup(auth, googleProvider);
-            const firebaseUser = result.user;
-            // Check if user already exists in Firestore
-            const userDocRef = doc(db, 'users', firebaseUser.uid);
-            const userDoc = await getDoc(userDocRef);
-            if (!userDoc.exists()) {
-                // First-time Google login → save as buyer
-                await setDoc(userDocRef, {
-                    name: firebaseUser.displayName || firebaseUser.email,
-                    role: 'buyer',
-                    email: firebaseUser.email,
-                    createdAt: new Date().toISOString()
-                });
-            }
-        } catch (err) {
-            if (err.code !== 'auth/popup-closed-by-user') {
-                setAuthError('Google sign-in failed. Please try again.');
-            }
-            throw err;
-        }
-    };
-
     // Quick login for demo (mock context kept for hackathon demo buttons)
     const quickLogin = (role, name) => {
         setUser({ role, name, uid: `demo-${role}`, email: `${role}@demo.com` });
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, authError, setAuthError, login, register, logout, loginWithGoogle, quickLogin }}>
+        <AuthContext.Provider value={{ user, loading, authError, setAuthError, login, register, logout, quickLogin }}>
             {children}
         </AuthContext.Provider>
     );
