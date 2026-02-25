@@ -4,7 +4,9 @@ import {
     signInWithEmailAndPassword,
     createUserWithEmailAndPassword,
     signOut,
-    onAuthStateChanged
+    onAuthStateChanged,
+    GoogleAuthProvider,
+    signInWithPopup
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
@@ -70,6 +72,34 @@ export function AuthProvider({ children }) {
         }
     };
 
+    const googleLogin = async () => {
+        setAuthError('');
+        try {
+            const provider = new GoogleAuthProvider();
+            const result = await signInWithPopup(auth, provider);
+            const firebaseUser = result.user;
+            // Check if user exists in Firestore
+            const userDocRef = doc(db, 'users', firebaseUser.uid);
+            const userDoc = await getDoc(userDocRef);
+            if (!userDoc.exists()) {
+                // New user, create doc with default role
+                await setDoc(userDocRef, {
+                    name: firebaseUser.displayName || firebaseUser.email,
+                    role: 'buyer',
+                    email: firebaseUser.email,
+                    createdAt: new Date().toISOString()
+                });
+            }
+        } catch (err) {
+            const messages = {
+                'auth/popup-closed-by-user': 'Sign-in cancelled.',
+                'auth/popup-blocked': 'Popup blocked by browser.',
+            };
+            setAuthError(messages[err.code] || 'Google sign-in failed. Please try again.');
+            throw err;
+        }
+    };
+
     const logout = async () => {
         await signOut(auth);
     };
@@ -80,7 +110,7 @@ export function AuthProvider({ children }) {
     };
 
     return (
-        <AuthContext.Provider value={{ user, loading, authError, setAuthError, login, register, logout, quickLogin }}>
+        <AuthContext.Provider value={{ user, loading, authError, setAuthError, login, register, googleLogin, logout, quickLogin }}>
             {children}
         </AuthContext.Provider>
     );
