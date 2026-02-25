@@ -13,6 +13,12 @@ export default function ProductDetail() {
     const [qty, setQty] = useState(1);
     const [added, setAdded] = useState(false);
     const [wishlist, setWishlist] = useState(false);
+    const [selectedImage, setSelectedImage] = useState(product?.image);
+
+    // Reset selected image when product changes
+    if (product && selectedImage !== product.image && !product.alternateImages?.includes(selectedImage)) {
+        setSelectedImage(product.image);
+    }
 
     if (!product) {
         return (
@@ -48,14 +54,41 @@ export default function ProductDetail() {
                     {/* Image */}
                     <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}
                         style={{ position: 'sticky', top: '6rem' }}>
-                        <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: 'var(--shadow-xl)', position: 'relative' }}>
-                            <img src={product.image} alt={product.name} style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover' }} />
+                        <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: 'var(--shadow-xl)', position: 'relative', marginBottom: '1rem' }}>
+                            <img src={selectedImage} alt={product.name}
+                                onError={(e) => {
+                                    if (!e.target.dataset.tried && product.alternateImages?.[0]) {
+                                        e.target.dataset.tried = '1';
+                                        e.target.src = product.alternateImages[0];
+                                    }
+                                }}
+                                style={{ width: '100%', aspectRatio: '3/4', objectFit: 'cover', transition: 'opacity 0.3s' }}
+                            />
                             {product.featured && (
                                 <span style={{ position: 'absolute', top: '1.5rem', left: '1.5rem', background: 'var(--color-secondary)', color: 'white', padding: '0.4rem 1rem', borderRadius: '4px', fontWeight: 600 }}>
                                     Featured Piece
                                 </span>
                             )}
                         </div>
+                        {/* Thumbnails */}
+                        {product.alternateImages && product.alternateImages.length > 0 && (
+                            <div style={{ display: 'flex', gap: '1rem', overflowX: 'auto', paddingBottom: '0.5rem' }}>
+                                {[product.image, ...product.alternateImages].map((img, idx) => (
+                                    <button
+                                        key={idx}
+                                        onClick={() => setSelectedImage(img)}
+                                        style={{
+                                            width: '80px', height: '80px', flexShrink: 0, padding: 0, border: selectedImage === img ? '2px solid var(--color-primary)' : '2px solid transparent',
+                                            borderRadius: '8px', overflow: 'hidden', cursor: 'pointer', transition: 'border-color 0.2s'
+                                        }}
+                                    >
+                                        <img src={img} alt={`Thumbnail ${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            onError={(e) => e.target.style.display = 'none'}
+                                        />
+                                    </button>
+                                ))}
+                            </div>
+                        )}
                     </motion.div>
 
                     {/* Details */}
@@ -147,7 +180,11 @@ export default function ProductDetail() {
                                     <div style={{ background: 'white', borderRadius: '8px', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', transition: 'transform 0.3s, box-shadow 0.3s' }}
                                         onMouseEnter={e => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.boxShadow = 'var(--shadow-md)'; }}
                                         onMouseLeave={e => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.boxShadow = 'var(--shadow-sm)'; }}>
-                                        <img src={p.image} alt={p.name} style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
+                                        <img src={p.image} alt={p.name}
+                                            onError={(e) => {
+                                                if (p.alternateImages?.[0]) e.target.src = p.alternateImages[0];
+                                            }}
+                                            style={{ width: '100%', height: '200px', objectFit: 'cover' }} />
                                         <div style={{ padding: '1rem' }}>
                                             <h4 style={{ fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '0.3rem' }}>{p.name}</h4>
                                             <p style={{ color: 'var(--color-secondary)', fontWeight: 700 }}>${p.price}</p>

@@ -4,6 +4,7 @@ import { ArrowRight, Star, Truck, ShieldCheck, Heart, ShoppingBag, Eye, Leaf, In
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { mockProducts } from '../data';
 import { useCart } from '../context/CartContext';
+import InteractiveMap from '../components/InteractiveMap';
 
 export default function Home() {
     const navigate = useNavigate();
@@ -253,7 +254,18 @@ export default function Home() {
                                     <span style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(4px)', color: 'var(--color-primary)', padding: '0.3rem 0.8rem', borderRadius: '2px', fontSize: '0.75rem', fontWeight: 600, zIndex: 2, letterSpacing: '0.05em', textTransform: 'uppercase' }}>
                                         {product.category}
                                     </span>
-                                    <img src={product.image} alt={product.name} style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)' }} className="product-image" />
+                                    <img src={product.image} alt={product.name}
+                                        onError={(e) => {
+                                            if (!e.target.dataset.tried && product.alternateImages?.[0]) {
+                                                e.target.dataset.tried = '1';
+                                                e.target.src = product.alternateImages[0];
+                                            } else if (e.target.dataset.tried === '1' && product.alternateImages?.[1]) {
+                                                e.target.dataset.tried = '2';
+                                                e.target.src = product.alternateImages[1];
+                                            }
+                                        }}
+                                        style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.8s cubic-bezier(0.16, 1, 0.3, 1)' }} className="product-image"
+                                    />
 
                                     {/* Overlay Actions */}
                                     <div className="overlay-actions" style={{ position: 'absolute', bottom: 0, left: 0, right: 0, padding: '1.5rem', background: 'linear-gradient(transparent, rgba(0,0,0,0.4))', display: 'flex', gap: '0.5rem', zIndex: 2, opacity: 0, transform: 'translateY(10px)', transition: 'all 0.4s cubic-bezier(0.16, 1, 0.3, 1)' }}>
@@ -279,6 +291,31 @@ export default function Home() {
                             </motion.div>
                         ))}
                     </div>
+                </div>
+            </section>
+
+            {/* Interactive Artisan Map */}
+            <section style={{ padding: '6rem 0', background: 'var(--color-bg-main)' }}>
+                <div className="container" style={{ display: 'grid', gridTemplateColumns: 'minmax(400px, 1fr) 1.5fr', gap: '4rem', alignItems: 'center' }}>
+                    <motion.div
+                        initial="hidden" whileInView="visible" viewport={{ once: true, margin: "-100px" }}
+                        variants={fadeUpVariant}
+                    >
+                        <span style={{ color: 'var(--color-secondary)', fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase', fontSize: '0.8rem' }}>Artisan Network</span>
+                        <h2 style={{ fontSize: '3rem', color: 'var(--color-primary)', marginTop: '0.5rem', fontWeight: 400, marginBottom: '1.5rem' }}>Discover Crafts by Region</h2>
+                        <p style={{ color: 'var(--color-text-muted)', fontSize: '1.1rem', lineHeight: 1.8, marginBottom: '2rem' }}>
+                            India's handloom heritage is as deeply diverse as its geography. Click on regions across our interactive map to explore authentic textiles, pottery, and art sourced directly from local master artisans.
+                        </p>
+                    </motion.div>
+
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 0.8 }}
+                        viewport={{ once: true }}
+                    >
+                        <InteractiveMap />
+                    </motion.div>
                 </div>
             </section>
 
@@ -393,6 +430,6 @@ export default function Home() {
                 .category-card:hover .cat-arrow { transform: translateX(8px); }
                 input::placeholder { color: rgba(255,255,255,0.5); }
             `}</style>
-        </div>
+        </div >
     );
 }

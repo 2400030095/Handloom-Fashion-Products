@@ -2,10 +2,17 @@ export const mockProducts = [
     {
         id: 1,
         name: 'Kanjeevaram Royal Silk Saree',
-        artisan: 'Ramesh Weavers, Tamil Nadu',
+        artisan: 'Ramesh Weavers',
+        state: 'Tamil Nadu',
         price: 150.00,
         category: 'Sarees',
         image: 'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1583391733956-340277353f4a?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1596443657302-6014cd700bf4?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1582294157502-d922a946654e?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'Authentic handwoven Kanjeevaram silk saree with pure zari border. Takes 15 days to weave by skilled artisans.',
         stock: 5,
         featured: true,
@@ -13,10 +20,17 @@ export const mockProducts = [
     {
         id: 2,
         name: 'Ikat Cotton Men\'s Kurta',
-        artisan: 'Pochampally Crafts, Telangana',
+        artisan: 'Pochampally Crafts',
+        state: 'Telangana',
         price: 45.00,
         category: 'Kurtas',
         image: 'https://images.unsplash.com/photo-1595341595011-82d8c3066d4f?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1581005896327-0cfd68f74a00?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1487222477894-8943e31ef7b2?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'Comfortable and breathable Ikat cotton kurta featuring traditional resist-dyeing techniques.',
         stock: 12,
         featured: false,
@@ -24,10 +38,17 @@ export const mockProducts = [
     {
         id: 3,
         name: 'Pure Pashmina Wool Shawl',
-        artisan: 'Himalayan Looms, Kashmir',
+        artisan: 'Himalayan Looms',
+        state: 'Jammu & Kashmir',
         price: 200.00,
         category: 'Shawls',
         image: 'https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1601054704854-1a2e79dac4d3?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1580918715876-0bf1db24fb47?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'Ultra-soft, genuine Pashmina wool shawl woven in the valleys of Kashmir. Extremely warm and lightweight.',
         stock: 3,
         featured: true,
@@ -35,10 +56,17 @@ export const mockProducts = [
     {
         id: 4,
         name: 'Banarasi Brocade Dupatta',
-        artisan: 'Varanasi Weaves, UP',
+        artisan: 'Varanasi Weaves',
+        state: 'Uttar Pradesh',
         price: 85.00,
         category: 'Accessories',
         image: 'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1614144362174-8c886e35593c?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1607345366928-199ea26cfe3e?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1600100778942-df21a0070747?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'Intricate golden brocade work on pure silk, perfect for festive occasions.',
         stock: 8,
         featured: false,
@@ -46,10 +74,17 @@ export const mockProducts = [
     {
         id: 5,
         name: 'Hand-Spun Khadi Linen Shirt',
-        artisan: 'Eco Threads Co., Gujarat',
+        artisan: 'Eco Threads Co.',
+        state: 'Gujarat',
         price: 55.00,
         category: 'Shirts',
         image: 'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1589310243389-96a5483213a8?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1598032895311-df4ad446f233?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1556821840-3a63f95609a7?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'Hand-spun, hand-woven Khadi linen shirt. Highly sustainable and gets softer with every wash.',
         stock: 15,
         featured: false,
@@ -57,10 +92,17 @@ export const mockProducts = [
     {
         id: 6,
         name: 'Jamdani Fine Cotton Saree',
-        artisan: 'Bengal Threads, West Bengal',
+        artisan: 'Bengal Threads',
+        state: 'West Bengal',
         price: 120.00,
         category: 'Sarees',
         image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1605518216938-7c31b7b14ad0?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1583391733956-340277353f4a?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1610484826967-09c5720778c7?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'Feather-light fine cotton saree featuring exquisite Jamdani motifs woven seamlessly into the fabric.',
         stock: 6,
         featured: true,
@@ -68,21 +110,35 @@ export const mockProducts = [
     {
         id: 7,
         name: 'Handwoven Kilim Rug',
-        artisan: 'Mirzapur Looms, UP',
+        artisan: 'Mirzapur Looms',
+        state: 'Uttar Pradesh',
         price: 250.00,
         category: 'Home Decor',
         image: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1574739782594-db4ead022697?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'A vibrant, flat-woven rug that adds a touch of traditional geometric art to any modern home.',
         stock: 4,
         featured: true,
     },
     {
         id: 8,
-        name: 'Embroidered Cushion Covers (Set of 2)',
-        artisan: 'Kutch Artisans, Gujarat',
+        name: 'Embroidered Cushion Covers',
+        artisan: 'Kutch Artisans',
+        state: 'Gujarat',
         price: 35.00,
         category: 'Home Decor',
         image: 'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1549490349-8643362247b5?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1598928506311-c55ded91a20c?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'Hand-embroidered cushion covers featuring tiny mirror work and vibrant threads.',
         stock: 20,
         featured: false,
@@ -90,10 +146,17 @@ export const mockProducts = [
     {
         id: 9,
         name: 'Kalamkari Block Print Tote',
-        artisan: 'Andhra Crafts, AP',
+        artisan: 'Andhra Crafts',
+        state: 'Andhra Pradesh',
         price: 40.00,
-        category: 'Accessories',
+        category: 'Bags',
         image: 'https://images.unsplash.com/photo-1591561954557-26941169b49e?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1622329619195-2aa084adcf51?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1584916201218-f4242ceb4809?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'A sturdy canvas tote bag showcasing traditional hand-block Kalamazoo prints using natural earthy dyes.',
         stock: 18,
         featured: false,
@@ -101,12 +164,109 @@ export const mockProducts = [
     {
         id: 10,
         name: 'Silk Ikat Scarf',
-        artisan: 'Odisha Weaves, Odisha',
+        artisan: 'Odisha Weaves',
+        state: 'Odisha',
         price: 65.00,
         category: 'Accessories',
         image: 'https://images.unsplash.com/photo-1614144362174-8c886e35593c?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1595341595011-82d8c3066d4f?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1616047006789-b7af5afb8c20?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800'
+        ],
         description: 'A lightweight pure silk scarf with intricate double-ikat patterns, perfect for layering.',
         stock: 10,
+        featured: true,
+    },
+    {
+        id: 11,
+        name: 'Indigo Shibori Bedspread',
+        artisan: 'Rajasthan Prints',
+        state: 'Rajasthan',
+        price: 90.00,
+        category: 'Home Decor',
+        image: 'https://images.unsplash.com/photo-1522771739844-6a9f6d5f14af?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1584100936595-c0654b55a2e6?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1584622650111-993a426fbf0a?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1574739782594-db4ead022697?auto=format&fit=crop&q=80&w=800'
+        ],
+        description: 'A beautiful queen-size bedspread dyed in natural indigo using the Shibori technique.',
+        stock: 8,
+        featured: true,
+    },
+    {
+        id: 12,
+        name: 'Hand-Painted Pattachitra Wall Art',
+        artisan: 'Raghurajpur Crafts',
+        state: 'Odisha',
+        price: 110.00,
+        category: 'Wall Art',
+        image: 'https://images.unsplash.com/photo-1579783902614-a3fb3927b6a5?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1578301978693-85fa9c0320b9?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1574739782594-db4ead022697?auto=format&fit=crop&q=80&w=800'
+        ],
+        description: 'Traditional scroll painting on cloth depicting mythological narratives from Odisha.',
+        stock: 2,
+        featured: true,
+    },
+    {
+        id: 13,
+        name: 'Terracotta Blue Pottery Vase',
+        artisan: 'Jaipur Blue Pottery',
+        state: 'Rajasthan',
+        price: 45.00,
+        category: 'Pottery',
+        image: 'https://images.unsplash.com/photo-1612196808214-b9e1d6145ca8?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1578500484698-f3b17e23504e?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1581783898377-1c85bf937427?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1574739782594-db4ead022697?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&q=80&w=800'
+        ],
+        description: 'Exquisite blue pottery vase from Jaipur, hand-painted with cobalt blue dye.',
+        stock: 12,
+        featured: false,
+    },
+    {
+        id: 14,
+        name: 'Zari Bordered Chanderi Suit Set',
+        artisan: 'Chanderi Weavers',
+        state: 'Madhya Pradesh',
+        price: 135.00,
+        category: 'Sarees',
+        image: 'https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1620799139507-2a76f79a2f4d?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1583391733956-340277353f4a?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1596443657302-6014cd700bf4?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1582294157502-d922a946654e?auto=format&fit=crop&q=80&w=800'
+        ],
+        description: 'Elegant Chanderi silk suite set with a shimmering zari border and delicate hand-block prints.',
+        stock: 7,
+        featured: true,
+    },
+    {
+        id: 15,
+        name: 'Muga Silk Stole',
+        artisan: 'Assam Golden Threads',
+        state: 'Assam',
+        price: 180.00,
+        category: 'Shawls',
+        image: 'https://images.unsplash.com/photo-1528698827591-e19ccd7bc23d?auto=format&fit=crop&q=80&w=800',
+        alternateImages: [
+            'https://images.unsplash.com/photo-1601054704854-1a2e79dac4d3?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1580918715876-0bf1db24fb47?auto=format&fit=crop&q=80&w=800',
+            'https://images.unsplash.com/photo-1620799140188-3b2a02fd9a77?auto=format&fit=crop&q=80&w=800'
+        ],
+        description: 'Rare Muga silk stole, known for its natural golden shimmer and extreme durability.',
+        stock: 4,
         featured: true,
     }
 ];

@@ -11,6 +11,7 @@ export default function Collections() {
     const [searchParams, setSearchParams] = useSearchParams();
     const [search, setSearch] = useState(searchParams.get('q') || '');
     const [category, setCategory] = useState(searchParams.get('category') || 'All');
+    const [stateFilter, setStateFilter] = useState(searchParams.get('state') || 'All');
     const [sort, setSort] = useState('featured');
     const { addToCart, cartItems } = useCart();
     const [toast, setToast] = useState('');
@@ -19,8 +20,9 @@ export default function Collections() {
         const newParams = {};
         if (search) newParams.q = search;
         if (category && category !== 'All') newParams.category = category;
+        if (stateFilter && stateFilter !== 'All') newParams.state = stateFilter;
         setSearchParams(newParams, { replace: true });
-    }, [search, category]);
+    }, [search, category, stateFilter, setSearchParams]);
 
     const handleAddToCart = (product) => {
         addToCart(product);
@@ -31,6 +33,7 @@ export default function Collections() {
     let filtered = [...mockProducts];
     if (search) filtered = filtered.filter(p => p.name.toLowerCase().includes(search.toLowerCase()) || p.artisan.toLowerCase().includes(search.toLowerCase()));
     if (category !== 'All') filtered = filtered.filter(p => p.category === category);
+    if (stateFilter !== 'All') filtered = filtered.filter(p => p.state === stateFilter);
     if (sort === 'price-asc') filtered.sort((a, b) => a.price - b.price);
     else if (sort === 'price-desc') filtered.sort((a, b) => b.price - a.price);
     else filtered.sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
@@ -98,7 +101,7 @@ export default function Collections() {
                 {filtered.length === 0 ? (
                     <div style={{ textAlign: 'center', padding: '6rem 0', color: 'var(--color-text-muted)' }}>
                         <p style={{ fontSize: '1.2rem' }}>No products match your search.</p>
-                        <button onClick={() => { setSearch(''); setCategory('All'); }} style={{ marginTop: '1rem', padding: '0.75rem 2rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: 'var(--radius-full)', cursor: 'pointer' }}>Clear Filters</button>
+                        <button onClick={() => { setSearch(''); setCategory('All'); setStateFilter('All'); }} style={{ marginTop: '1rem', padding: '0.75rem 2rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: 'var(--radius-full)', cursor: 'pointer' }}>Clear Filters</button>
                     </div>
                 ) : (
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2.5rem' }}>
@@ -113,6 +116,15 @@ export default function Collections() {
                                 >
                                     <Link to={`/product/${product.id}`} style={{ display: 'block', position: 'relative', overflow: 'hidden', height: '280px' }}>
                                         <img src={product.image} alt={product.name} className="product-image"
+                                            onError={(e) => {
+                                                if (!e.target.dataset.tried && product.alternateImages?.[0]) {
+                                                    e.target.dataset.tried = '1';
+                                                    e.target.src = product.alternateImages[0];
+                                                } else if (e.target.dataset.tried === '1' && product.alternateImages?.[1]) {
+                                                    e.target.dataset.tried = '2';
+                                                    e.target.src = product.alternateImages[1];
+                                                }
+                                            }}
                                             style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.6s ease' }} />
                                         {product.featured && (
                                             <span style={{ position: 'absolute', top: '1rem', left: '1rem', background: 'var(--color-secondary)', color: 'white', padding: '0.25rem 0.75rem', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 600 }}>Featured</span>
