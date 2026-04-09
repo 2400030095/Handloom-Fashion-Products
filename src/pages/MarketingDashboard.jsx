@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Megaphone, TrendingUp, Users, Target, Calendar } from 'lucide-react';
 
 export default function MarketingDashboard() {
-    const { user } = useAuth();
+    const { user, quickLogin } = useAuth();
 
     const [campaigns, setCampaigns] = useState([
         { id: 1, name: 'Winter Warmth (Pashmina)', status: 'Active', reach: '45.2K', queries: 320 },
@@ -15,8 +15,51 @@ export default function MarketingDashboard() {
         return <div className="page" style={{ padding: '2rem', textAlign: 'center' }}><h2>Access Denied</h2><p>Marketing privileges required.</p></div>;
     }
 
+    const demoRoles = [
+        { id: 'buyer', name: 'Buyer', icon: '🛒' },
+        { id: 'artisan', name: 'Artisan', icon: '🧵' },
+        { id: 'marketing', name: 'Marketing', icon: '📊' },
+        { id: 'admin', name: 'Admin', icon: '⚙️' }
+    ];
+
+    const handleDemoLogin = (roleId) => {
+        const roleNames = { buyer: 'Buyer User', artisan: 'Artisan User', marketing: 'Marketing User', admin: 'Admin User' };
+        quickLogin(roleId, roleNames[roleId]);
+        // Navigate to the appropriate dashboard
+        const paths = { buyer: '/buyer', artisan: '/artisan', marketing: '/marketing', admin: '/admin' };
+        window.location.href = paths[roleId];
+    };
+
     return (
-        <div className="page" style={{ padding: '2rem 0' }}>
+        <div className="page" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: '2rem 0' }}>
+            {/* Demo Login Banner */}
+            <div style={{ background: 'linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%)', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                <span>🔄 <strong>Demo Mode:</strong> Switch roles to test different dashboards</span>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {demoRoles.map(role => (
+                        <button
+                            key={role.id}
+                            onClick={() => handleDemoLogin(role.id)}
+                            style={{
+                                padding: '0.4rem 0.8rem',
+                                background: user.role === role.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+                                border: '1px solid rgba(255,255,255,0.3)',
+                                borderRadius: '6px',
+                                color: 'white',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+                            onMouseLeave={e => e.currentTarget.style.background = user.role === role.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)'}
+                        >
+                            {role.icon} {role.name}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '2rem' }}>
                 <div style={{ background: 'var(--color-primary-light)', padding: '1rem', borderRadius: '50%', color: 'white' }}>
                     <Megaphone size={32} />
@@ -89,6 +132,7 @@ export default function MarketingDashboard() {
                         ))}
                     </tbody>
                 </table>
+            </div>
             </div>
         </div>
     );

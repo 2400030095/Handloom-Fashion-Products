@@ -3,7 +3,7 @@ import { useAuth } from '../context/AuthContext';
 import { Users, Shield, FileCheck, Check, X, AlertTriangle } from 'lucide-react';
 
 export default function AdminDashboard() {
-    const { user } = useAuth();
+    const { user, quickLogin } = useAuth();
     const [activeTab, setActiveTab] = useState('users'); // 'users', 'moderation'
 
     // Mock Users
@@ -23,6 +23,21 @@ export default function AdminDashboard() {
         return <div className="page" style={{ padding: '2rem', textAlign: 'center' }}><h2>Access Denied</h2><p>Admin privileges required.</p></div>;
     }
 
+    const demoRoles = [
+        { id: 'buyer', name: 'Buyer', icon: '🛒' },
+        { id: 'artisan', name: 'Artisan', icon: '🧵' },
+        { id: 'marketing', name: 'Marketing', icon: '📊' },
+        { id: 'admin', name: 'Admin', icon: '⚙️' }
+    ];
+
+    const handleDemoLogin = (roleId) => {
+        const roleNames = { buyer: 'Buyer User', artisan: 'Artisan User', marketing: 'Marketing User', admin: 'Admin User' };
+        quickLogin(roleId, roleNames[roleId]);
+        // Navigate to the appropriate dashboard
+        const paths = { buyer: '/buyer', artisan: '/artisan', marketing: '/marketing', admin: '/admin' };
+        window.location.href = paths[roleId];
+    };
+
     const toggleUserStatus = (id) => {
         setUsersList(usersList.map(u => {
             if (u.id === id) {
@@ -38,7 +53,36 @@ export default function AdminDashboard() {
     };
 
     return (
-        <div className="page" style={{ display: 'flex', gap: '2rem', marginTop: '2rem' }}>
+        <div className="page" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
+            {/* Demo Login Banner */}
+            <div style={{ background: 'linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%)', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                <span>🔄 <strong>Demo Mode:</strong> Switch roles to test different dashboards</span>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {demoRoles.map(role => (
+                        <button
+                            key={role.id}
+                            onClick={() => handleDemoLogin(role.id)}
+                            style={{
+                                padding: '0.4rem 0.8rem',
+                                background: user.role === role.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+                                border: '1px solid rgba(255,255,255,0.3)',
+                                borderRadius: '6px',
+                                color: 'white',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+                            onMouseLeave={e => e.currentTarget.style.background = user.role === role.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)'}
+                        >
+                            {role.icon} {role.name}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '2rem' }}>
             <aside className="card" style={{ width: '250px', height: 'fit-content' }}>
                 <h3 style={{ marginBottom: '1.5rem', color: 'var(--color-primary-dark)' }}>Admin Panel</h3>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
@@ -163,6 +207,7 @@ export default function AdminDashboard() {
                     </div>
                 )}
             </main>
+            </div>
         </div>
     );
 }

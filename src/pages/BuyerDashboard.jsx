@@ -4,13 +4,28 @@ import { mockProducts, mockOrders } from '../data';
 import { ShoppingCart, ShoppingBag, CheckCircle, Package } from 'lucide-react';
 
 export default function BuyerDashboard() {
-    const { user } = useAuth();
+    const { user, quickLogin } = useAuth();
     const [activeTab, setActiveTab] = useState('shop'); // 'shop', 'cart', 'orders'
     const [cart, setCart] = useState([]);
 
     if (user.role !== 'buyer' && user.role !== 'admin') {
         return <div className="page" style={{ padding: '2rem', textAlign: 'center' }}><h2>Access Denied</h2><p>Please login as a Buyer.</p></div>;
     }
+
+    const demoRoles = [
+        { id: 'buyer', name: 'Buyer', icon: '🛒' },
+        { id: 'artisan', name: 'Artisan', icon: '🧵' },
+        { id: 'marketing', name: 'Marketing', icon: '📊' },
+        { id: 'admin', name: 'Admin', icon: '⚙️' }
+    ];
+
+    const handleDemoLogin = (roleId) => {
+        const roleNames = { buyer: 'Buyer User', artisan: 'Artisan User', marketing: 'Marketing User', admin: 'Admin User' };
+        quickLogin(roleId, roleNames[roleId]);
+        // Navigate to the appropriate dashboard
+        const paths = { buyer: '/buyer', artisan: '/artisan', marketing: '/marketing', admin: '/admin' };
+        window.location.href = paths[roleId];
+    };
 
     const addToCart = (product) => {
         setCart(prev => {
@@ -35,7 +50,36 @@ export default function BuyerDashboard() {
     };
 
     return (
-        <div className="page" style={{ display: 'flex', gap: '2rem', marginTop: '2rem' }}>
+        <div className="page" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
+            {/* Demo Login Banner */}
+            <div style={{ background: 'linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%)', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+                <span>🔄 <strong>Demo Mode:</strong> Switch roles to test different dashboards</span>
+                <div style={{ display: 'flex', gap: '0.5rem' }}>
+                    {demoRoles.map(role => (
+                        <button
+                            key={role.id}
+                            onClick={() => handleDemoLogin(role.id)}
+                            style={{
+                                padding: '0.4rem 0.8rem',
+                                background: user.role === role.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)',
+                                border: '1px solid rgba(255,255,255,0.3)',
+                                borderRadius: '6px',
+                                color: 'white',
+                                fontSize: '0.8rem',
+                                fontWeight: 600,
+                                cursor: 'pointer',
+                                transition: 'all 0.2s'
+                            }}
+                            onMouseEnter={e => e.currentTarget.style.background = 'rgba(255,255,255,0.2)'}
+                            onMouseLeave={e => e.currentTarget.style.background = user.role === role.id ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.1)'}
+                        >
+                            {role.icon} {role.name}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
+            <div style={{ display: 'flex', gap: '2rem' }}>
 
             {/* Sidebar sidebar */}
             <aside className="card" style={{ width: '250px', height: 'fit-content' }}>
@@ -192,6 +236,7 @@ export default function BuyerDashboard() {
                     </div>
                 )}
             </main>
+            </div>
         </div>
     );
 }

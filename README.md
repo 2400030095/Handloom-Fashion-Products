@@ -33,13 +33,22 @@ Open your browser to the URL provided by Vite (typically `http://localhost:5173/
 
 ## 👤 User Roles Demonstration
 
+### Quick Demo Login
+The application includes convenient demo login functionality accessible from multiple locations:
+
+1. **From the Login Page**: Click any of the "Quick Login" role buttons (Buyer, Artisan, Marketing, Admin) at the bottom of the login form.
+
+2. **From Any Dashboard**: Each dashboard now features a demo banner at the top with role-switching buttons, allowing you to instantly switch between different user perspectives without logging out.
+
+### Exploring User Roles
 1. **Visit the Homepage**: Marvel at the fluid animations and curated catalog. Note the "Quick Add" feature on the Trending cards.
-2. **Click "Login"**: The system uses dummy credentials. Click any of the "Quick Login" avatars to instantly swap roles.
-3. **Explore**:
+2. **Login as Different Roles**:
    - **Buyer**: Add items to your cart, simulate checkout, and track historical orders.
    - **Artisan**: View your earnings, check stock levels, and list new products dynamically.
    - **Marketing**: Access a gorgeous analytics portal and monitor active campaigns.
    - **Admin**: Moderate newly added products and manage active user suspensions.
+
+3. **Switch Roles Seamlessly**: Use the demo login banner on any dashboard to instantly switch between roles and test the full ecosystem.
 
 ## 🎨 Design Philosophy
 We avoided generic CSS frameworks like Tailwind to establish a truly bespoke "Handloom" identity. The application utilizes a warm, earthy color palette (`#8b5a2b`), the elegant `Outfit` typeface, subtle box-shadow depth (`var(--shadow-xl)`), and fluid hover interactions to ensure the digital experience matches the premium feel of the physical garments
