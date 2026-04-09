@@ -6,7 +6,8 @@ import {
     signOut,
     onAuthStateChanged,
     GoogleAuthProvider,
-    signInWithPopup
+    signInWithRedirect,
+    getRedirectResult
 } from 'firebase/auth';
 import { doc, setDoc, getDoc } from 'firebase/firestore';
 
@@ -18,6 +19,36 @@ export function AuthProvider({ children }) {
     const [authError, setAuthError] = useState('');
 
     useEffect(() => {
+        // Handle redirect result from Google sign-in
+        const handleRedirectResult = async () => {
+            try {
+                const result = await getRedirectResult(auth);
+                if (result?.user) {
+                    const firebaseUser = result.user;
+                    // Check if user exists in Firestore
+                    const userDocRef = doc(db, 'users', firebaseUser.uid);
+                    const userDoc = await getDoc(userDocRef);
+                    if (!userDoc.exists()) {
+                        // New user, create doc with default role
+                        await setDoc(userDocRef, {
+                            name: firebaseUser.displayName || firebaseUser.email,
+                            role: 'buyer',
+                            email: firebaseUser.email,
+                            createdAt: new Date().toISOString()
+                        });
+                    }
+                }
+            } catch (err) {
+                const messages = {
+                    'auth/popup-closed-by-user': 'Sign-in cancelled.',
+                    'auth/popup-blocked': 'Redirect blocked by browser.',
+                };
+                setAuthError(messages[err.code] || 'Google sign-in failed. Please try again.');
+            }
+        };
+
+        handleRedirectResult();
+
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
                 try {
@@ -76,20 +107,8 @@ export function AuthProvider({ children }) {
         setAuthError('');
         try {
             const provider = new GoogleAuthProvider();
-            const result = await signInWithPopup(auth, provider);
-            const firebaseUser = result.user;
-            // Check if user exists in Firestore
-            const userDocRef = doc(db, 'users', firebaseUser.uid);
-            const userDoc = await getDoc(userDocRef);
-            if (!userDoc.exists()) {
-                // New user, create doc with default role
-                await setDoc(userDocRef, {
-                    name: firebaseUser.displayName || firebaseUser.email,
-                    role: 'buyer',
-                    email: firebaseUser.email,
-                    createdAt: new Date().toISOString()
-                });
-            }
+            await signInWithRedirect(auth, provider);
+            // Note: The result will be handled in the useEffect below
         } catch (err) {
             const messages = {
                 'auth/popup-closed-by-user': 'Sign-in cancelled.',
