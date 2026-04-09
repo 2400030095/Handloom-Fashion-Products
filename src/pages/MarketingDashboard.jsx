@@ -133,7 +133,6 @@ export default function MarketingDashboard() {
                     </tbody>
                 </table>
             </div>
-            </div>
         </div>
     );
 }
