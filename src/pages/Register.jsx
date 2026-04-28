@@ -22,8 +22,8 @@ export default function Register() {
         if (form.password.length < 6) { setLocalError("Password must be at least 6 characters."); return; }
         setLoading(true);
         try {
-            await register(form.email, form.password, form.name, form.role);
-            navigate(`/${form.role}`);
+            const nextUser = await register(form.email, form.password, form.name, form.role);
+            navigate(`/${nextUser.role}`);
         } catch {
             // Error already set in AuthContext
         } finally {

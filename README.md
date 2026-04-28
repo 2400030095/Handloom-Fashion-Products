@@ -31,6 +31,33 @@ npm run dev
 
 Open your browser to the URL provided by Vite (typically `http://localhost:5173/` or `http://localhost:51653/`).
 
+## Backend API
+
+This repo now includes a small Express backend in [backend/server.js](C:/Users/pavan/OneDrive/Desktop/Full%20St/backend/server.js:1) for exposing Firestore data as REST endpoints.
+
+### Setup
+
+1. Install dependencies:
+```bash
+npm install
+```
+2. Create `backend/.env` from `backend/.env.example`
+3. Add your Firebase service account values
+4. Start the backend:
+```bash
+npm run server
+```
+
+### API Endpoints
+
+- `GET /api/health`
+- `GET /api/users`
+- `GET /api/users/:id`
+- `GET /api/orders`
+- `POST /api/orders`
+
+This backend is suitable for hosting separately from the frontend, but GitHub only stores the code. To run it online, deploy it to a service like Render, Railway, Firebase Functions, or Cloud Run.
+
 ## 👤 User Roles Demonstration
 
 ### Quick Demo Login

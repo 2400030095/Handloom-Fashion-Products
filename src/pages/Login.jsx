@@ -19,13 +19,18 @@ export default function Login() {
         { id: 'admin', name: 'Admin', icon: <Shield size={22} />, path: '/admin' }
     ];
 
+    const getRolePath = (role) => {
+        const match = roles.find((item) => item.id === role);
+        return match?.path || '/buyer';
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         if (setAuthError) setAuthError('');
         setLoading(true);
         try {
-            await login(email, password);
-            navigate('/buyer');
+            const nextUser = await login(email, password);
+            navigate(getRolePath(nextUser?.role));
         } catch {
             // error handled in context
         } finally {

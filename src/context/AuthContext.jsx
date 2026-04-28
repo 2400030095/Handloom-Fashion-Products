@@ -18,6 +18,34 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true);
     const [authError, setAuthError] = useState('');
 
+    const loadUserProfile = async (firebaseUser) => {
+        const fallbackUser = {
+            role: 'buyer',
+            name: firebaseUser.displayName || firebaseUser.email,
+            uid: firebaseUser.uid,
+            email: firebaseUser.email,
+        };
+
+        try {
+            const userDocRef = doc(db, 'users', firebaseUser.uid);
+            const userDoc = await getDoc(userDocRef);
+
+            if (userDoc.exists()) {
+                const data = userDoc.data();
+                return {
+                    role: data.role || 'buyer',
+                    name: data.name || fallbackUser.name,
+                    uid: firebaseUser.uid,
+                    email: firebaseUser.email,
+                };
+            }
+
+            return fallbackUser;
+        } catch {
+            return fallbackUser;
+        }
+    };
+
     useEffect(() => {
         // Handle redirect result from Google sign-in
         const handleRedirectResult = async () => {
@@ -51,18 +79,8 @@ export function AuthProvider({ children }) {
 
         const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
             if (firebaseUser) {
-                try {
-                    const userDocRef = doc(db, 'users', firebaseUser.uid);
-                    const userDoc = await getDoc(userDocRef);
-                    if (userDoc.exists()) {
-                        const data = userDoc.data();
-                        setUser({ role: data.role, name: data.name, uid: firebaseUser.uid, email: firebaseUser.email });
-                    } else {
-                        setUser({ role: 'buyer', name: firebaseUser.displayName || firebaseUser.email, uid: firebaseUser.uid, email: firebaseUser.email });
-                    }
-                } catch {
-                    setUser({ role: 'buyer', name: firebaseUser.email, uid: firebaseUser.uid, email: firebaseUser.email });
-                }
+                const nextUser = await loadUserProfile(firebaseUser);
+                setUser(nextUser);
             } else {
                 setUser({ role: 'guest', name: 'Guest', uid: null, email: null });
             }
@@ -74,7 +92,8 @@ export function AuthProvider({ children }) {
     const login = async (email, password) => {
         setAuthError('');
         try {
-            await signInWithEmailAndPassword(auth, email, password);
+            const cred = await signInWithEmailAndPassword(auth, email, password);
+            return loadUserProfile(cred.user);
         } catch (err) {
             const messages = {
                 'auth/user-not-found': 'No account found with this email.',
@@ -92,6 +111,7 @@ export function AuthProvider({ children }) {
         try {
             const cred = await createUserWithEmailAndPassword(auth, email, password);
             await setDoc(doc(db, 'users', cred.user.uid), { name, role, email, createdAt: new Date().toISOString() });
+            return { role, name, uid: cred.user.uid, email: cred.user.email };
         } catch (err) {
             const messages = {
                 'auth/email-already-in-use': 'This email is already registered.',
