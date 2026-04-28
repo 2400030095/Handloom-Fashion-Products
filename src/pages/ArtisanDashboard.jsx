@@ -59,8 +59,127 @@ export default function ArtisanDashboard() {
 
     return (
         <div className="page" style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginTop: '2rem' }}>
+            {/* Responsive Styles */}
+            <style>{`
+                .dashboard-banner {
+                    display: flex;
+                    alignItems: center;
+                    justifyContent: space-between;
+                    gap: 1rem;
+                }
+                
+                .dashboard-layout {
+                    display: flex;
+                    gap: 2rem;
+                }
+                
+                .dashboard-sidebar {
+                    width: 250px;
+                    height: fit-content;
+                }
+                
+                .dashboard-form {
+                    display: grid;
+                    gridTemplateColumns: 1fr 1fr;
+                    gap: 1rem;
+                }
+                
+                .form-full {
+                    gridColumn: 1 / -1;
+                }
+                
+                .dashboard-table {
+                    width: 100%;
+                    borderCollapse: collapse;
+                    textAlign: left;
+                }
+                
+                .dashboard-stats {
+                    display: grid;
+                    gridTemplateColumns: repeat(auto-fit, minmax(200px, 1fr));
+                    gap: 1.5rem;
+                }
+                
+                @media (max-width: 1024px) {
+                    .dashboard-layout {
+                        gap: 1.5rem;
+                    }
+                    
+                    .dashboard-sidebar {
+                        width: 200px;
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .dashboard-layout {
+                        flexDirection: column;
+                        gap: 1rem;
+                    }
+                    
+                    .dashboard-sidebar {
+                        width: 100%;
+                    }
+                    
+                    .dashboard-form {
+                        gridTemplateColumns: 1fr;
+                    }
+                    
+                    .dashboard-table tbody td {
+                        paddingTop: 0.75rem;
+                        paddingBottom: 0.75rem;
+                    }
+                    
+                    .dashboard-banner {
+                        flexDirection: column;
+                        alignItems: flex-start;
+                    }
+                    
+                    .dashboard-banner > div:last-child {
+                        width: 100%;
+                        display: flex;
+                        flexWrap: wrap;
+                        gap: 0.5rem;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .dashboard-banner {
+                        fontSize: 0.8rem;
+                    }
+                    
+                    .dashboard-table thead {
+                        display: none;
+                    }
+                    
+                    .dashboard-table tbody tr {
+                        display: block;
+                        marginBottom: 1rem;
+                        border: 1px solid var(--color-border);
+                        borderRadius: 8px;
+                        overflow: hidden;
+                    }
+                    
+                    .dashboard-table tbody td {
+                        display: block;
+                        textAlign: right;
+                        paddingLeft: 50%;
+                        paddingRight: 1rem;
+                        paddingTop: 0.5rem;
+                        paddingBottom: 0.5rem;
+                        position: relative;
+                    }
+                    
+                    .dashboard-table tbody td::before {
+                        content: attr(data-label);
+                        position: absolute;
+                        left: 0.5rem;
+                        fontWeight: bold;
+                        color: var(--color-text-muted);
+                    }
+                }
+            `}</style>
             {/* Demo Login Banner */}
-            <div style={{ background: 'linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%)', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.9rem' }}>
+            <div className="dashboard-banner" style={{ background: 'linear-gradient(135deg, #8b5a2b 0%, #a67c52 100%)', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'space-between', fontSize: '0.9rem' }}>
                 <span>🔄 <strong>Demo Mode:</strong> Switch roles to test different dashboards</span>
                 <div style={{ display: 'flex', gap: '0.5rem' }}>
                     {demoRoles.map(role => (
@@ -87,9 +206,9 @@ export default function ArtisanDashboard() {
                 </div>
             </div>
 
-            <div style={{ display: 'flex', gap: '2rem' }}>
+            <div className="dashboard-layout" style={{ display: 'flex', gap: '2rem' }}>
                 {/* Sidebar */}
-                <aside className="card" style={{ width: '250px', height: 'fit-content' }}>
+                <aside className="dashboard-sidebar card" style={{ width: '250px', height: 'fit-content' }}>
                 <h3 style={{ marginBottom: '1.5rem', color: 'var(--color-primary-dark)' }}>Artisan Portal</h3>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
                     <li>
@@ -127,7 +246,7 @@ export default function ArtisanDashboard() {
                 {activeTab === 'overview' && (
                     <div>
                         <h2 style={{ fontSize: '2rem', color: 'var(--color-primary)', marginBottom: '2rem' }}>Welcome, {user.name}</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
+                        <div className="dashboard-stats" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '2rem' }}>
                             <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <div style={{ background: '#e0f2fe', padding: '1rem', borderRadius: '50%', color: '#0284c7' }}>
                                     <DollarSign size={24} />
@@ -171,7 +290,7 @@ export default function ArtisanDashboard() {
                             <h3 style={{ marginBottom: '1.5rem', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-primary)' }}>
                                 <PlusCircle size={20} /> Add New Listing
                             </h3>
-                            <form onSubmit={handleAddProduct} style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+                            <form onSubmit={handleAddProduct} className="dashboard-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                 <div className="form-group">
                                     <label className="form-label">Product Name</label>
                                     <input type="text" className="form-input" value={newProduct.name} onChange={e => setNewProduct({ ...newProduct, name: e.target.value })} required />
@@ -193,7 +312,7 @@ export default function ArtisanDashboard() {
                                     <label className="form-label">Stock Quantity</label>
                                     <input type="number" className="form-input" value={newProduct.stock} onChange={e => setNewProduct({ ...newProduct, stock: e.target.value })} required />
                                 </div>
-                                <div style={{ gridColumn: '1 / -1' }}>
+                                <div className="form-full" style={{ gridColumn: '1 / -1' }}>
                                     <button type="submit" className="btn btn-primary">List Product</button>
                                 </div>
                             </form>
@@ -201,7 +320,7 @@ export default function ArtisanDashboard() {
 
                         <h3 style={{ marginBottom: '1rem' }}>My Inventory</h3>
                         <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
-                            <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
+                            <table className="dashboard-table" style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left' }}>
                                 <thead>
                                     <tr style={{ background: 'var(--color-bg-main)', borderBottom: '1px solid var(--color-border)' }}>
                                         <th style={{ padding: '1rem' }}>Product</th>

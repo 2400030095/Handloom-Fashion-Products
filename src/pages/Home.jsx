@@ -49,6 +49,71 @@ export default function Home() {
     return (
         <div className="page home-page" style={{ paddingBottom: '0' }}>
 
+            {/* Responsive Styles */}
+            <style>{`
+                .home-page .hero .container {
+                    display: grid;
+                    gridTemplateColumns: minmax(450px, 1.1fr) 1fr;
+                    gap: 5rem;
+                    alignItems: center;
+                }
+                
+                @media (max-width: 1024px) {
+                    .home-page .hero .container {
+                        gridTemplateColumns: 1fr;
+                        gap: 3rem;
+                    }
+                    
+                    .home-page .hero {
+                        minHeight: auto;
+                        padding: 3rem 0;
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .home-page .hero .container {
+                        gap: 2rem;
+                    }
+                    
+                    .home-page .hero {
+                        padding: 2rem 0;
+                    }
+                    
+                    .home-page h1 {
+                        fontSize: 2.5rem;
+                    }
+                    
+                    .home-page .hero-image-container {
+                        height: 400px !important;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .home-page h1 {
+                        fontSize: 1.75rem;
+                    }
+                    
+                    .home-page .hero-image-container {
+                        height: 300px !important;
+                    }
+                    
+                    .home-page .hero-image-container img {
+                        width: 100% !important;
+                        height: auto !important;
+                    }
+                    
+                    .home-page .glass-panel {
+                        display: none;
+                    }
+                    
+                    .hero-stats {
+                        display: flex;
+                        gap: 1.5rem !important;
+                        flexWrap: wrap;
+                    }
+                }
+            `}</style>
+
             {/* Toast Notification */}
             <motion.div
                 initial={{ y: 100, opacity: 0 }}
@@ -76,7 +141,7 @@ export default function Home() {
                 <motion.div style={{ y: y1, position: 'absolute', top: '-10%', right: '-10%', width: '60vw', height: '60vw', background: 'radial-gradient(circle, rgba(155,112,78,0.06) 0%, rgba(250,250,248,0) 70%)', borderRadius: '50%', zIndex: 0, filter: 'blur(40px)' }} />
                 <motion.div style={{ y: y2, position: 'absolute', bottom: '-20%', left: '-5%', width: '50vw', height: '50vw', background: 'radial-gradient(circle, rgba(26,26,26,0.04) 0%, rgba(250,250,248,0) 70%)', borderRadius: '50%', zIndex: 0, filter: 'blur(40px)' }} />
 
-                <div className="container" style={{ position: 'relative', zIndex: 1, display: 'grid', gridTemplateColumns: 'minmax(450px, 1.1fr) 1fr', gap: '5rem', alignItems: 'center', width: '100%' }}>
+                <div className="container" style={{ position: 'relative', zIndex: 1, display: 'grid', width: '100%' }}>
 
                     {/* Text Content */}
                     <motion.div
@@ -115,7 +180,7 @@ export default function Home() {
                         </motion.div>
 
                         {/* Stats */}
-                        <motion.div variants={fadeUpVariant} style={{ display: 'flex', gap: '3.5rem', marginTop: '4.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '2.5rem' }}>
+                        <motion.div className="hero-stats" variants={fadeUpVariant} style={{ display: 'flex', gap: '3.5rem', marginTop: '4.5rem', borderTop: '1px solid var(--color-border)', paddingTop: '2.5rem' }}>
                             <div>
                                 <h4 style={{ fontSize: '2.2rem', fontWeight: 600, color: 'var(--color-primary)', fontFamily: 'var(--font-main)', letterSpacing: '-0.03em' }}>500+</h4>
                                 <p style={{ color: 'var(--color-text-muted)', fontSize: '0.85rem', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.05em' }}>Master Artisans</p>
@@ -129,6 +194,7 @@ export default function Home() {
 
                     {/* Hero Image Collage */}
                     <motion.div
+                        className="hero-image-container"
                         initial={{ opacity: 0, scale: 0.95 }}
                         animate={{ opacity: 1, scale: 1 }}
                         transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.2 }}
@@ -173,10 +239,11 @@ export default function Home() {
                         />
                         {/* Glass badge */}
                         <motion.div
+                            className="glass-panel"
                             initial={{ opacity: 0, x: -20 }}
                             animate={{ opacity: 1, x: 0 }}
                             transition={{ delay: 1.5, duration: 0.8 }}
-                            className="glass-panel" style={{
+                            style={{
                                 position: 'absolute', top: '15%', left: '-10%', display: 'flex', alignItems: 'center', gap: '1rem',
                                 padding: '1rem 1.5rem', zIndex: 3
                             }}>
@@ -328,7 +395,7 @@ export default function Home() {
                         transition={{ duration: 0.8 }}
                         viewport={{ once: true }}
                     >
-                        <InteractiveMap />
+                        {/* <InteractiveMap /> */}
                     </motion.div>
                 </div>
             </section>

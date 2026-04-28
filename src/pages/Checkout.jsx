@@ -68,13 +68,85 @@ export default function Checkout() {
 
     return (
         <div style={{ minHeight: '100vh', background: 'var(--color-bg-main)', paddingBottom: '6rem' }}>
-            <div className="container" style={{ paddingTop: '7rem', maxWidth: '1100px' }}>
+            {/* Responsive Styles */}
+            <style>{`
+                .checkout-grid {
+                    display: grid;
+                    gridTemplateColumns: 1fr 360px;
+                    gap: 3rem;
+                    alignItems: start;
+                }
+                
+                .checkout-form {
+                    display: grid;
+                    gridTemplateColumns: 1fr 1fr;
+                    gap: 1.25rem;
+                }
+                
+                .checkout-summary {
+                    position: sticky;
+                    top: 6rem;
+                }
+                
+                .progress-steps {
+                    display: flex;
+                    justifyContent: center;
+                    gap: 2rem;
+                    marginBottom: 3rem;
+                }
+                
+                @media (max-width: 1024px) {
+                    .checkout-grid {
+                        gap: 2rem;
+                    }
+                    
+                    .checkout-summary {
+                        position: static;
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .checkout-grid {
+                        gridTemplateColumns: 1fr;
+                        gap: 1.5rem;
+                    }
+                    
+                    .checkout-form {
+                        gridTemplateColumns: 1fr;
+                    }
+                    
+                    .checkout-summary {
+                        order: -1;
+                    }
+                    
+                    .progress-steps {
+                        gap: 1rem;
+                        fontSize: 0.9rem;
+                    }
+                    
+                    .progress-steps > div > span:last-of-type {
+                        display: none;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .progress-steps {
+                        gap: 0.75rem;
+                        marginBottom: 2rem;
+                    }
+                    
+                    .checkout-form {
+                        gap: 1rem;
+                    }
+                }
+            `}</style>
+            <div className="container" style={{ paddingTop: '7rem', maxWidth: '1100px' }}>>
                 <h1 style={{ fontSize: '2.5rem', fontWeight: 400, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '3rem', textAlign: 'center' }}>
                     Checkout
                 </h1>
 
                 {/* Progress */}
-                <div style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '3rem' }}>
+                <div className="progress-steps" style={{ display: 'flex', justifyContent: 'center', gap: '2rem', marginBottom: '3rem' }}>
                     {['address', 'payment'].map((s, i) => (
                         <div key={s} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <div style={{ width: '32px', height: '32px', borderRadius: '50%', background: step === s || (step === 'payment' && s === 'address') ? 'var(--color-primary)' : 'var(--color-border)', color: step === s || (step === 'payment' && s === 'address') ? 'white' : 'var(--color-text-muted)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontWeight: 700, fontSize: '0.9rem' }}>
@@ -86,7 +158,7 @@ export default function Checkout() {
                     ))}
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '3rem', alignItems: 'start' }}>
+                <div className="checkout-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: '3rem', alignItems: 'start' }}>
                     {/* Form */}
                     <motion.div key={step} initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} style={{ background: 'white', borderRadius: '12px', padding: '2.5rem', boxShadow: 'var(--shadow-sm)' }}>
                         {step === 'address' && (
@@ -95,7 +167,7 @@ export default function Checkout() {
                                     <MapPin size={22} color="var(--color-secondary)" />
                                     <h2 style={{ fontSize: '1.3rem', fontWeight: 600, color: 'var(--color-primary)' }}>Delivery Address</h2>
                                 </div>
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
+                                <div className="checkout-form" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.25rem' }}>
                                     <div style={{ gridColumn: '1 / -1' }}>
                                         <label style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-primary)', marginBottom: '0.5rem', display: 'block' }}>Full Name *</label>
                                         <input name="fullName" value={form.fullName} onChange={handleChange} placeholder="John Doe" style={inputStyle} required />
@@ -171,7 +243,7 @@ export default function Checkout() {
                     </motion.div>
 
                     {/* Summary Sidebar */}
-                    <div style={{ background: 'white', borderRadius: '12px', padding: '2rem', boxShadow: 'var(--shadow-sm)', position: 'sticky', top: '6rem' }}>
+                    <div className="checkout-summary" style={{ background: 'white', borderRadius: '12px', padding: '2rem', boxShadow: 'var(--shadow-sm)', position: 'sticky', top: '6rem' }}>
                         <h3 style={{ fontWeight: 600, marginBottom: '1.5rem', color: 'var(--color-primary)' }}>Your Order</h3>
                         {cartItems.map(item => (
                             <div key={item.id} style={{ display: 'flex', gap: '1rem', marginBottom: '1.25rem', alignItems: 'center' }}>

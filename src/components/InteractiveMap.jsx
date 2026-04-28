@@ -1,5 +1,5 @@
 import { useState, useMemo, useCallback, useEffect } from 'react';
-import { GoogleMap, useJsApiLoader, InfoWindow } from '@react-google-maps/api';
+import { GoogleMap, useJsApiLoader, InfoWindow, Marker } from '@react-google-maps/api';
 import { mockProducts } from '../data';
 import { useNavigate } from 'react-router-dom';
 
@@ -11,8 +11,6 @@ const containerStyle = {
 };
 
 const INDIA_CENTER = { lat: 22.5937, lng: 78.9629 };
-
-const LIBRARIES = ['marker'];
 
 const stateCenters = {
     'Rajasthan': { lat: 27.0238, lng: 74.2179 },
@@ -55,7 +53,6 @@ export default function InteractiveMap() {
         id: 'google-map-script',
         // Loaded securely from environment variables (e.g., .env or .env.local)
         googleMapsApiKey: import.meta.env.VITE_GOOGLE_MAPS_API_KEY || "",
-        libraries: LIBRARIES
     });
 
     const [map, setMap] = useState(null);
@@ -63,6 +60,29 @@ export default function InteractiveMap() {
     const [hoveredStateMarker, setHoveredStateMarker] = useState(null);
     const [selectedArtisan, setSelectedArtisan] = useState(null);
     const navigate = useNavigate();
+
+    const stateIcon = useMemo(() => ({
+        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#9B704E" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                <circle cx="12" cy="10" r="3"></circle>
+            </svg>
+        `),
+        scaledSize: isLoaded ? new google.maps.Size(40, 40) : null,
+        anchor: isLoaded ? new google.maps.Point(20, 40) : null
+    }), [isLoaded]);
+
+    const artisanIcon = useMemo(() => ({
+        url: 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(`
+            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#1A1A1A" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <path d="M12 8v8"></path>
+                <path d="M8 12h8"></path>
+            </svg>
+        `),
+        scaledSize: isLoaded ? new google.maps.Size(32, 32) : null,
+        anchor: isLoaded ? new google.maps.Point(16, 32) : null
+    }), [isLoaded]);
 
     const onLoad = useCallback(function callback(map) {
         setMap(map);
@@ -115,56 +135,10 @@ export default function InteractiveMap() {
     }, []);
 
     // State markers
-    useEffect(() => {
-        if (!map || selectedState) return;
-        const markers = statesWithArtisans.map(state => {
-            const markerElement = document.createElement('div');
-            markerElement.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="#9B704E" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                    <circle cx="12" cy="10" r="3"></circle>
-                </svg>
-            `;
-            const marker = new google.maps.marker.AdvancedMarkerElement({
-                map,
-                position: stateCenters[state],
-                content: markerElement,
-                title: state,
-            });
-            marker.addListener('gmp-click', () => handleStateClick(state));
-            marker.addListener('mouseover', () => setHoveredStateMarker(state));
-            marker.addListener('mouseout', () => setHoveredStateMarker(null));
-            return marker;
-        });
-        return () => {
-            markers.forEach(marker => marker.map = null);
-        };
-    }, [map, selectedState, statesWithArtisans]);
+    // Removed useEffect for imperative markers, using declarative Marker components instead
 
     // Artisan markers
-    useEffect(() => {
-        if (!map || !selectedState) return;
-        const markers = artisanPins.map(artisan => {
-            const markerElement = document.createElement('div');
-            markerElement.innerHTML = `
-                <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="#1A1A1A" stroke="#ffffff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <path d="M12 8v8"></path>
-                    <path d="M8 12h8"></path>
-                </svg>
-            `;
-            const marker = new google.maps.marker.AdvancedMarkerElement({
-                map,
-                position: artisan.coords,
-                content: markerElement,
-            });
-            marker.addListener('gmp-click', () => setSelectedArtisan(artisan));
-            return marker;
-        });
-        return () => {
-            markers.forEach(marker => marker.map = null);
-        };
-    }, [map, selectedState, artisanPins]);
+    // Removed useEffect for imperative markers, using declarative Marker components instead
 
     if (!isLoaded) return <div style={{ height: '600px', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#f0f0f0', borderRadius: '12px' }}>Loading Map...</div>;
 
@@ -241,6 +215,28 @@ export default function InteractiveMap() {
                         </div>
                     </InfoWindow>
                 )}
+
+                {/* State Markers */}
+                {!selectedState && statesWithArtisans.map(state => (
+                    <Marker
+                        key={state}
+                        position={stateCenters[state]}
+                        icon={stateIcon}
+                        onClick={() => handleStateClick(state)}
+                        onMouseOver={() => setHoveredStateMarker(state)}
+                        onMouseOut={() => setHoveredStateMarker(null)}
+                    />
+                ))}
+
+                {/* Artisan Markers */}
+                {selectedState && artisanPins.map(artisan => (
+                    <Marker
+                        key={artisan.name}
+                        position={artisan.coords}
+                        icon={artisanIcon}
+                        onClick={() => setSelectedArtisan(artisan)}
+                    />
+                ))}
             </GoogleMap>
         </div >
     );

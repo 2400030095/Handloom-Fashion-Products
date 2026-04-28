@@ -40,6 +40,79 @@ export default function Collections() {
 
     return (
         <div style={{ minHeight: '100vh', background: 'var(--color-bg-main)', paddingBottom: '6rem' }}>
+            {/* Responsive Styles */}
+            <style>{`
+                .collections-filter {
+                    display: flex;
+                    gap: 1rem;
+                    marginBottom: 2.5rem;
+                    flexWrap: wrap;
+                    alignItems: center;
+                }
+                
+                .collections-filter-search {
+                    position: relative;
+                    flex: 1;
+                    minWidth: 280px;
+                }
+                
+                .collections-categories {
+                    display: flex;
+                    gap: 0.75rem;
+                    marginBottom: 3rem;
+                    flexWrap: wrap;
+                }
+                
+                .collections-grid {
+                    display: grid;
+                    gridTemplateColumns: repeat(auto-fill, minmax(300px, 1fr));
+                    gap: 2.5rem;
+                }
+                
+                @media (max-width: 1024px) {
+                    .collections-grid {
+                        gridTemplateColumns: repeat(auto-fill, minmax(250px, 1fr));
+                        gap: 2rem;
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .collections-filter {
+                        marginBottom: 1.5rem;
+                    }
+                    
+                    .collections-filter-search {
+                        minWidth: 100%;
+                    }
+                    
+                    .collections-filter select {
+                        minWidth: 100%;
+                    }
+                    
+                    .collections-categories {
+                        marginBottom: 2rem;
+                    }
+                    
+                    .collections-grid {
+                        gridTemplateColumns: repeat(auto-fill, minmax(200px, 1fr));
+                        gap: 1.5rem;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .collections-grid {
+                        gridTemplateColumns: 1fr;
+                    }
+                    
+                    .collections-categories button {
+                        paddingTop: 0.5rem;
+                        paddingBottom: 0.5rem;
+                        paddingLeft: 1rem;
+                        paddingRight: 1rem;
+                        fontSize: 0.85rem;
+                    }
+                }
+            `}</style>
             {/* Toast */}
             <motion.div initial={{ y: 100, opacity: 0 }} animate={{ y: toast ? 0 : 100, opacity: toast ? 1 : 0 }}
                 style={{ position: 'fixed', bottom: '2rem', right: '2rem', zIndex: 9999, background: 'var(--color-primary)', color: 'white', padding: '1rem 2rem', borderRadius: 'var(--radius-full)', boxShadow: 'var(--shadow-lg)', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
@@ -59,8 +132,8 @@ export default function Collections() {
 
             <div className="container" style={{ paddingTop: '3rem' }}>
                 {/* Filters */}
-                <div style={{ display: 'flex', gap: '1rem', marginBottom: '2.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                    <div style={{ position: 'relative', flex: 1, minWidth: '280px' }}>
+                <div className="collections-filter" style={{ display: 'flex', gap: '1rem', marginBottom: '2.5rem', flexWrap: 'wrap', alignItems: 'center' }}>
+                    <div className="collections-filter-search" style={{ position: 'relative', flex: 1, minWidth: '280px' }}>
                         <Search size={18} style={{ position: 'absolute', left: '1.2rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--color-text-muted)' }} />
                         <input
                             type="text"
@@ -83,7 +156,7 @@ export default function Collections() {
                 </div>
 
                 {/* Category Tabs */}
-                <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
+                <div className="collections-categories" style={{ display: 'flex', gap: '0.75rem', marginBottom: '3rem', flexWrap: 'wrap' }}>
                     {CATEGORIES.map(cat => (
                         <button key={cat} onClick={() => setCategory(cat)}
                             style={{
@@ -104,7 +177,7 @@ export default function Collections() {
                         <button onClick={() => { setSearch(''); setCategory('All'); setStateFilter('All'); }} style={{ marginTop: '1rem', padding: '0.75rem 2rem', background: 'var(--color-primary)', color: 'white', border: 'none', borderRadius: 'var(--radius-full)', cursor: 'pointer' }}>Clear Filters</button>
                     </div>
                 ) : (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2.5rem' }}>
+                    <div className="collections-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '2.5rem' }}>
                         {filtered.map((product, i) => {
                             const inCart = cartItems.find(c => c.id === product.id);
                             return (

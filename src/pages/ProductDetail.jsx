@@ -40,6 +40,98 @@ export default function ProductDetail() {
 
     return (
         <div style={{ minHeight: '100vh', background: 'var(--color-bg-main)', paddingBottom: '6rem' }}>
+            {/* Responsive Styles */}
+            <style>{`
+                .product-detail-grid {
+                    display: grid;
+                    gridTemplateColumns: 1fr 1fr;
+                    gap: 5rem;
+                    alignItems: start;
+                    marginBottom: 6rem;
+                }
+                
+                .product-image-container {
+                    position: sticky;
+                    top: 6rem;
+                }
+                
+                .product-details {
+                    display: flex;
+                    flexDirection: column;
+                }
+                
+                .product-ctas {
+                    display: flex;
+                    gap: 1rem;
+                    marginBottom: 2.5rem;
+                }
+                
+                .trust-badges {
+                    display: grid;
+                    gridTemplateColumns: repeat(3, 1fr);
+                    gap: 1rem;
+                }
+                
+                .related-products-grid {
+                    display: grid;
+                    gridTemplateColumns: repeat(auto-fill, minmax(250px, 1fr));
+                    gap: 2rem;
+                }
+                
+                @media (max-width: 1024px) {
+                    .product-detail-grid {
+                        gap: 3rem;
+                    }
+                    
+                    .product-image-container {
+                        position: static;
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .product-detail-grid {
+                        gridTemplateColumns: 1fr;
+                        gap: 2rem;
+                        marginBottom: 3rem;
+                    }
+                    
+                    .trust-badges {
+                        gridTemplateColumns: 1fr;
+                    }
+                    
+                    .product-ctas {
+                        flexDirection: column;
+                    }
+                    
+                    .product-ctas button,
+                    .product-ctas a {
+                        width: 100%;
+                    }
+                    
+                    .related-products-grid {
+                        gridTemplateColumns: repeat(auto-fill, minmax(200px, 1fr));
+                        gap: 1.5rem;
+                    }
+                    
+                    .product-detail-grid h1 {
+                        fontSize: 1.75rem;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .trust-badges {
+                        gap: 0.5rem;
+                    }
+                    
+                    .trust-badges > div {
+                        padding: 0.75rem;
+                    }
+                    
+                    .related-products-grid {
+                        gridTemplateColumns: 1fr;
+                    }
+                }
+            `}</style>
             <div className="container" style={{ paddingTop: '6rem' }}>
                 {/* Breadcrumb */}
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '3rem', color: 'var(--color-text-muted)', fontSize: '0.9rem' }}>
@@ -50,9 +142,9 @@ export default function ProductDetail() {
                     <span style={{ color: 'var(--color-primary)', fontWeight: 500 }}>{product.name}</span>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'start', marginBottom: '6rem' }}>
+                <div className="product-detail-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '5rem', alignItems: 'start', marginBottom: '6rem' }}>
                     {/* Image */}
-                    <motion.div initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}
+                    <motion.div className="product-image-container" initial={{ opacity: 0, x: -30 }} animate={{ opacity: 1, x: 0 }} transition={{ duration: 0.7 }}
                         style={{ position: 'sticky', top: '6rem' }}>
                         <div style={{ borderRadius: '8px', overflow: 'hidden', boxShadow: 'var(--shadow-xl)', position: 'relative', marginBottom: '1rem' }}>
                             <img src={selectedImage} alt={product.name}
@@ -145,7 +237,7 @@ export default function ProductDetail() {
                         </div>
 
                         {/* CTAs */}
-                        <div style={{ display: 'flex', gap: '1rem', marginBottom: '2.5rem' }}>
+                        <div className="product-ctas" style={{ display: 'flex', gap: '1rem', marginBottom: '2.5rem' }}>
                             <button onClick={handleAddToCart}
                                 style={{ flex: 1, padding: '1.1rem', borderRadius: 'var(--radius-full)', background: added ? '#16a34a' : 'var(--color-primary)', color: 'white', border: 'none', fontWeight: 600, fontSize: '1rem', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', transition: 'all 0.3s' }}>
                                 <ShoppingBag size={20} /> {added ? '✓ Added to Cart' : inCart ? `Add More (${inCart.qty} in cart)` : 'Add to Cart'}
@@ -164,7 +256,7 @@ export default function ProductDetail() {
                         )}
 
                         {/* Trust Badges */}
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
+                        <div className="trust-badges" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
                             {[
                                 { icon: <Truck size={18} />, text: 'Free Shipping', sub: 'Orders over ₹4150' },
                                 { icon: <ShieldCheck size={18} />, text: 'Authentic', sub: 'Verified Handloom' },
@@ -184,7 +276,7 @@ export default function ProductDetail() {
                 {related.length > 0 && (
                     <div>
                         <h2 style={{ fontSize: '2rem', fontWeight: 400, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '2.5rem' }}>You May Also Love</h2>
-                        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '2rem' }}>
+                        <div className="related-products-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(250px, 1fr))', gap: '2rem' }}>
                             {related.map(p => (
                                 <Link key={p.id} to={`/product/${p.id}`} style={{ textDecoration: 'none' }}>
                                     <div style={{ background: 'white', borderRadius: '8px', overflow: 'hidden', boxShadow: 'var(--shadow-sm)', transition: 'transform 0.3s, box-shadow 0.3s' }}

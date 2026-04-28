@@ -22,6 +22,52 @@ export default function Cart() {
 
     return (
         <div style={{ minHeight: '100vh', background: 'var(--color-bg-main)', paddingBottom: '6rem' }}>
+            <style>{`
+                .cart-grid {
+                    display: grid;
+                    gridTemplateColumns: 1fr 380px;
+                    gap: 3rem;
+                    alignItems: start;
+                }
+                
+                @media (max-width: 1024px) {
+                    .cart-grid {
+                        gridTemplateColumns: 1fr;
+                        gap: 2rem;
+                    }
+                    
+                    .order-summary {
+                        position: static !important;
+                        top: auto !important;
+                    }
+                }
+                
+                @media (max-width: 768px) {
+                    .cart-item {
+                        flexDirection: column;
+                        gap: 1rem;
+                    }
+                    
+                    .cart-item-image {
+                        width: 100% !important;
+                        height: auto !important;
+                    }
+                }
+                
+                @media (max-width: 480px) {
+                    .cart-grid {
+                        gap: 1.5rem;
+                    }
+                    
+                    .cart-item {
+                        padding: 1rem !important;
+                    }
+                    
+                    .order-summary {
+                        padding: 1.5rem !important;
+                    }
+                }
+            `}</style>
             <div className="container" style={{ paddingTop: '7rem' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '3rem' }}>
                     <button onClick={() => navigate(-1)} style={{ background: 'none', border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-text-muted)', fontSize: '0.95rem' }}>
@@ -32,17 +78,18 @@ export default function Cart() {
                     </h1>
                 </div>
 
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '3rem', alignItems: 'start' }}>
+                <div className="cart-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '3rem', alignItems: 'start' }}>
                     {/* Cart Items */}
                     <div>
                         <AnimatePresence>
                             {cartItems.map(item => (
                                 <motion.div key={item.id}
+                                    className="cart-item"
                                     layout initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: 20 }}
                                     style={{ background: 'white', borderRadius: '12px', padding: '1.5rem', display: 'flex', gap: '1.5rem', marginBottom: '1.5rem', boxShadow: 'var(--shadow-sm)', alignItems: 'flex-start' }}
                                 >
                                     <Link to={`/product/${item.id}`}>
-                                        <img src={item.image} alt={item.name} style={{ width: '120px', height: '140px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
+                                        <img className="cart-item-image" src={item.image} alt={item.name} style={{ width: '120px', height: '140px', objectFit: 'cover', borderRadius: '8px', flexShrink: 0 }}
                                             onError={(e) => {
                                                 const tried = parseInt(e.target.dataset.tried || '0');
                                                 if (tried < item.alternateImages?.length) {
@@ -79,7 +126,7 @@ export default function Cart() {
                     </div>
 
                     {/* Order Summary */}
-                    <div style={{ background: 'white', borderRadius: '12px', padding: '2rem', boxShadow: 'var(--shadow-md)', position: 'sticky', top: '6rem' }}>
+                    <div className="order-summary" style={{ background: 'white', borderRadius: '12px', padding: '2rem', boxShadow: 'var(--shadow-md)', position: 'sticky', top: '6rem' }}>
                         <h2 style={{ fontSize: '1.5rem', fontWeight: 600, color: 'var(--color-primary)', marginBottom: '2rem' }}>Order Summary</h2>
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', marginBottom: '1.5rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--color-text-muted)' }}>
