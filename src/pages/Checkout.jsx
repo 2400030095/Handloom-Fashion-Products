@@ -140,7 +140,7 @@ export default function Checkout() {
                     }
                 }
             `}</style>
-            <div className="container" style={{ paddingTop: '7rem', maxWidth: '1100px' }}>>
+            <div className="container" style={{ paddingTop: '7rem', maxWidth: '1100px' }}>
                 <h1 style={{ fontSize: '2.5rem', fontWeight: 400, color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', marginBottom: '3rem', textAlign: 'center' }}>
                     Checkout
                 </h1>
